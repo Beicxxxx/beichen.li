@@ -92,6 +92,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .pill button[aria-pressed="true"] { background: currentColor; }
 .pill button[aria-pressed="true"] span { color: var(--ikb); }
 .nav.on-paper .pill button[aria-pressed="true"] span { color: var(--paper); }
+/* language pill: sliding ink on a spring (after ruixen Magnetic Tabs) */
+.pill--js { position: relative; }
+.pill--js button { position: relative; z-index: 1; background: transparent !important; }
+.pill--js button span { color: inherit !important; transition: color .12s linear; }
+.pill--js button.on span { color: var(--ikb) !important; }
+.nav.on-paper .pill--js button.on span { color: var(--paper) !important; }
+.pill__ink { position: absolute; top: 0; bottom: 0; left: 0; width: 0; background: currentColor; pointer-events: none; will-change: transform, width; }
+/* language switch: short text decodes (ruixen Scramble Text), running text rises word by word (ruixen Scroll Text Rise) */
+.lxw { display: inline-block; white-space: nowrap; }
+.lxc { display: inline-block; text-align: center; transition: transform .5s cubic-bezier(.3,1.75,.55,1), opacity .3s ease-out; }
+.lxc.u { opacity: .35; transform: translateY(.12em) scaleY(.85); transition: none; }
+.lxw.r { transition: transform .75s cubic-bezier(.16,.84,.2,1), opacity .6s ease-out; }
+.lxw.r.u { opacity: .12; transform: translateY(.55em); transition: none; }
 .iconbtn { min-height: 34px; min-width: 34px; border: 1px solid currentColor; background: transparent; cursor: pointer; display: inline-grid; place-items: center; }
 .iconbtn[aria-pressed="true"] { background: currentColor; }
 .iconbtn { position: relative; }
@@ -537,7 +550,7 @@ html.still .status__dot { animation-play-state: paused; }
   let saved = null; try { saved = localStorage.getItem('bl-lang'); } catch (e) {}
   const auto = (navigator.languages || [navigator.language || '']).some(l => /^zh/i.test(l)) ? 'zh' : 'en';
   setLang(saved === 'zh' || saved === 'en' ? saved : auto);
-  document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.setLang)));
+  document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => switchLang(b.dataset.setLang, b)));
 
   /* ---------- grid guides ---------- */
   const gridBtn = document.getElementById('gridBtn'), guides = document.getElementById('guides');
@@ -591,6 +604,108 @@ html.still .status__dot { animation-play-state: paused; }
   scramble(nameEl, { dur: 900, stagger: 55 }); setTimeout(() => scramble(hanEl, { dur: 900, pool: HAN, stagger: 120 }), 350);
   const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('span').forEach(s => { if (s.offsetParent) scramble(s, { dur: 650, stagger: 12, pool: root.dataset.lang === 'zh' ? HAN : LAT }); }); io.unobserve(e.target); } }), { threshold: .6 });
   document.querySelectorAll('[data-scramble-on-view]').forEach(h => { if (reduce || !h.classList.contains('sec__title')) io.observe(h); });
+
+  /* ---------- language switch motion ----------
+     After ruixen.com: short labels and headings decode like Scramble Text (30 ms ticks, a wave that
+     starts at the language button, spring lock-in from y +4px / scaleY .85 / opacity .35); running
+     text rises word by word like Scroll Text Rise; the EN/中 ink slides on a Magnetic Tabs spring
+     (stiffness 500, damping 22). Only what is on screen animates; everything else switches at once. */
+  const HANPOOL = (() => { const set = new Set(); document.querySelectorAll('[lang="zh-Hans"]').forEach(e => { for (const c of e.textContent) if (/[㐀-鿿]/.test(c)) set.add(c); }); return set.size > 20 ? [...set].join('') : HAN; })();
+  const LXPOOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
+  const TOK = /\s+|[“‘（《「『【(]*[㐀-鿿豈-﫿][，。、；：！？”’）》」』】)…·]*|[^\s㐀-鿿豈-﫿]+/g;
+  let lx = null;
+  function lxEnd() {
+    if (!lx) return;
+    cancelAnimationFrame(lx.raf); lx.undo.forEach(f => f()); root.removeAttribute('aria-busy'); lx = null;
+  }
+  function switchLang(l, btn) {
+    if (root.dataset.lang === l) return;
+    lxEnd();
+    setLang(l);
+    pillTarget(false);
+    if (reduce || !motionOn) return;
+    const tag = l === 'zh' ? 'zh-Hans' : 'en';
+    const vw = innerWidth, vh = innerHeight, diag = Math.hypot(vw, vh);
+    const ob = btn ? btn.getBoundingClientRect() : { left: vw, top: 0, width: 0, height: 0 };
+    const ox = ob.left + ob.width / 2, oy = ob.top + ob.height / 2;
+    const els = [...document.body.querySelectorAll('[lang="' + tag + '"]')].filter(e => {
+      const up = e.parentElement && e.parentElement.closest('[lang="' + tag + '"]');
+      if (up && up !== root) return false;
+      if (e.closest('.sr, .sec__title:not(.rise-in), .card')) return false;
+      const r = e.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+    });
+    const undo = [], chars = [], words = [];
+    for (const el of els) {
+      const r = el.getBoundingClientRect();
+      const dx = Math.max(r.left - ox, 0, ox - r.right), dy = Math.max(r.top - oy, 0, oy - r.bottom);
+      const d0 = 40 + Math.hypot(dx, dy) / diag * 340;
+      const rise = el.textContent.trim().length > 64 && !el.closest('.nav');
+      const rtl = ox > r.left + r.width / 2;
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      const nodes = []; for (let n = walker.nextNode(); n; n = walker.nextNode()) if (n.nodeValue.trim() && !n.parentElement.closest('.sr, script, style, svg')) nodes.push(n);
+      const mine = [];
+      for (const node of nodes) {
+        const frag = document.createDocumentFragment();
+        for (const tok of node.nodeValue.match(TOK) || []) {
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); continue; }
+          const w = document.createElement('span'); w.className = 'lxw';
+          if (rise) { w.textContent = tok; mine.push({ w }); }
+          else for (const ch of tok) { const c = document.createElement('span'); c.className = 'lxc'; c.textContent = ch; w.appendChild(c); mine.push({ c, ch, pool: /[\u3400-\u9fff\uf900-\ufaff]/.test(ch) ? HANPOOL : LXPOOL }); }
+          frag.appendChild(w);
+        }
+        const made = [...frag.childNodes], parent = node.parentNode;
+        parent.replaceChild(frag, node);
+        undo.push(() => { if (made[0] && made[0].parentNode === parent) { parent.insertBefore(node, made[0]); made.forEach(m => m.remove()); } });
+      }
+      if (rise) { const st = Math.min(26, 520 / Math.max(1, mine.length)); mine.forEach((it, i) => { it.at = d0 + i * st; words.push(it); }); }
+      else { const n = mine.length, st = Math.min(42, 480 / Math.max(1, n)); mine.forEach((it, i) => { it.at = d0 + 60 + (rtl ? n - 1 - i : i) * st; chars.push(it); }); }
+    }
+    const widths = chars.map(it => it.c.getBoundingClientRect().width);
+    chars.forEach((it, i) => { if (it.ch.trim()) { it.c.style.width = widths[i] + 'px'; it.c.classList.add('u'); } else it.done = true; });
+    words.forEach(it => { it.w.classList.add('r', 'u'); });
+    if (nameEl.getBoundingClientRect().bottom > 0) { scramble(nameEl, { dur: 700, stagger: 40 }); scramble(hanEl, { dur: 700, pool: HAN, stagger: 90 }); }
+    if (!chars.length && !words.length) return;
+    root.setAttribute('aria-busy', 'true');
+    const end = Math.max(0, ...chars.map(it => it.at), ...words.map(it => it.at)) + 800;
+    const t0 = performance.now(); let tick = -1;
+    lx = { undo, raf: 0 };
+    const step = (now) => {
+      const t = now - t0, k = Math.floor(t / 30), roll = k !== tick; tick = k;
+      for (const it of chars) {
+        if (it.done) continue;
+        if (t >= it.at) { it.c.textContent = it.ch; it.c.classList.remove('u'); it.done = true; }
+        else if (roll) it.c.textContent = it.pool[(Math.random() * it.pool.length) | 0];
+      }
+      for (const it of words) if (!it.done && t >= it.at) { it.w.classList.remove('u'); it.done = true; }
+      if (t > end) { lxEnd(); return; }
+      lx.raf = requestAnimationFrame(step);
+    };
+    lx.raf = requestAnimationFrame(step);
+  }
+  const pill = document.querySelector('.nav .pill'), ink = document.createElement('span');
+  ink.className = 'pill__ink'; ink.setAttribute('aria-hidden', 'true'); pill.prepend(ink); pill.classList.add('pill--js');
+  let px = 0, pw = 0, pvx = 0, pvw = 0, ptx = 0, ptw = 0, praf = 0, plast = 0;
+  function pillPaint() {
+    ink.style.transform = 'translate3d(' + px.toFixed(2) + 'px,0,0)'; ink.style.width = pw.toFixed(2) + 'px';
+    const c = px + pw / 2;
+    pill.querySelectorAll('button').forEach(b => b.classList.toggle('on', c >= b.offsetLeft && c < b.offsetLeft + b.offsetWidth));
+  }
+  function pillStep(now) {
+    const dt = Math.min(0.032, (now - plast) / 1000); plast = now;
+    for (let i = 0; i < 4; i++) { const h = dt / 4; pvx += (500 * (ptx - px) - 22 * pvx) * h; px += pvx * h; pvw += (500 * (ptw - pw) - 22 * pvw) * h; pw += pvw * h; }
+    if (Math.abs(ptx - px) < .3 && Math.abs(pvx) < .3 && Math.abs(ptw - pw) < .3 && Math.abs(pvw) < .3) { px = ptx; pw = ptw; pvx = pvw = 0; pillPaint(); praf = 0; return; }
+    pillPaint(); praf = requestAnimationFrame(pillStep);
+  }
+  function pillTarget(jump) {
+    const b = pill.querySelector('[aria-pressed="true"]'); if (!b) return;
+    ptx = b.offsetLeft; ptw = b.offsetWidth;
+    if (jump || reduce || !motionOn) { cancelAnimationFrame(praf); praf = 0; px = ptx; pw = ptw; pvx = pvw = 0; pillPaint(); return; }
+    if (!praf) { plast = performance.now(); praf = requestAnimationFrame(pillStep); }
+  }
+  pillTarget(true);
+  addEventListener('resize', () => pillTarget(true));
+  if (document.fonts) document.fonts.ready.then(() => pillTarget(true));
   if (!reduce) {
     const riseIO = new IntersectionObserver((es) => es.forEach(e => {
       if (!e.isIntersecting) return;
