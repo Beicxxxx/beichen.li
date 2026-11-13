@@ -32,6 +32,8 @@
 html,body{margin:0}
 
 /* LXGW WenKai, OFL 1.1: only the four characters of its own name, for the specimen on its project row */
+@font-face{font-family:"Murecho";src:url(fonts/murecho-subset.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Murecho";src:url(fonts/murecho-ran.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+862D}
 @font-face{font-family:"OPPO Sans";src:url(fonts/oppo-sans-subset.woff2) format("woff2");font-weight:100 700;font-style:normal;font-display:swap}
 @font-face { font-family: "LXGW WenKai"; font-weight: 400; font-display: swap; src: url(fonts/lxgw-wenkai-name.woff2) format("woff2"); }
 
@@ -50,6 +52,7 @@ html,body{margin:0}
   --f-mono: "Geist Mono", "OPPO Sans", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --f-han: "OPPO Sans", "PingFang SC", "Microsoft YaHei", sans-serif;   /* Chinese display */
   --f-zh: "OPPO Sans", "PingFang SC", "Microsoft YaHei", sans-serif;  /* Chinese running text */
+  --f-ja: "Murecho", "OPPO Sans", "Hiragino Sans", "Yu Gothic", sans-serif;  /* Japanese; OPPO Sans covers 钅 and other forms Japanese fonts lack */
   --gutter-l: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   --max: 1360px;
@@ -57,7 +60,16 @@ html,body{margin:0}
 }
 html { background: var(--paper); }
 body { background: var(--paper); color: var(--ink); font-family: var(--f-display); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-html:not([data-lang]) [lang="zh-Hans"], html[data-lang="en"] [lang="zh-Hans"], html[data-lang="zh"] [lang="en"] { display: none !important; }
+html:not([data-lang]) [lang="zh-Hans"], html:not([data-lang]) [lang="ja"], html[data-lang="en"] [lang="zh-Hans"], html[data-lang="en"] [lang="ja"], html[data-lang="zh"] [lang="en"], html[data-lang="zh"] [lang="ja"], html[data-lang="ja"] [lang="en"], html[data-lang="ja"] [lang="zh-Hans"] { display: none !important; }
+/* Japanese: Murecho comes before OPPO Sans everywhere, so kanji take Japanese forms (蘭, missing from Murecho, comes from M PLUS 2) */
+html[data-lang="ja"] { --f-display: "Geist", var(--f-ja); --f-mono: "Geist Mono", var(--f-ja); }
+html[data-lang="ja"] body { font-family: var(--f-display); line-height: 1.85; }
+html[data-lang="ja"] .mono { letter-spacing: .02em; }
+html[data-lang="ja"] .mono [lang="ja"], html[data-lang="ja"] .mono[lang="ja"], html[data-lang="ja"] .status__item [lang="ja"] { font-family: var(--f-display); letter-spacing: .02em; }
+html[data-lang="ja"] .sec__title, html[data-lang="ja"] .study h3 { word-break: keep-all; overflow-wrap: anywhere; text-wrap: wrap; line-break: strict; }
+html[data-lang="ja"] .sec__title, html[data-lang="ja"] .study h3, html[data-lang="ja"] .hinge__state h2 { font-weight: 700; }
+html[data-lang="ja"] .lead { line-height: 1.65; letter-spacing: 0; }
+html[data-lang="ja"] p, html[data-lang="ja"] .row__what { line-break: strict; }
 html[data-lang="zh"] body { font-family: var(--f-display), var(--f-zh); line-height: 1.8; }
 html[data-lang="zh"] .mono { letter-spacing: .02em; }
 html[data-lang="zh"] .mono [lang="zh-Hans"], html[data-lang="zh"] .mono[lang="zh-Hans"], html[data-lang="zh"] .status__item [lang="zh-Hans"] { font-family: var(--f-display), var(--f-zh); letter-spacing: .02em; }
@@ -121,6 +133,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .iconbtn { position: relative; }
 .iconbtn::after { content: attr(data-tip-en); position: absolute; top: calc(100% + 8px); left: 50%; transform: translate(-50%, -4px); padding: 4px 8px; background: var(--ink); color: var(--paper); font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: .02em; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
 html[data-lang="zh"] .iconbtn::after { content: attr(data-tip-zh); font-family: var(--f-display), var(--f-zh); }
+html[data-lang="ja"] .iconbtn::after { content: attr(data-tip-ja); font-family: var(--f-display); }
 .iconbtn:hover::after, .iconbtn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
 @media (hover: none) { .iconbtn::after { display: none; } }
 .iconbtn[aria-pressed="true"] svg { stroke: var(--ikb); }
@@ -143,7 +156,9 @@ html[data-lang="zh"] .iconbtn::after { content: attr(data-tip-zh); font-family: 
 .hero__eyebrow { color: var(--on-ikb-mute); }
 .hero__name { margin: 0; font-weight: 600; font-size: clamp(4rem, 1.5rem + 10vw, 10rem); line-height: .86; letter-spacing: -0.055em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .18em; }
 .hero__name .han { font-weight: 500; font-size: .3em; letter-spacing: .04em; color: var(--on-ikb-mute); }
-html[data-lang="zh"] .hero__name .han { order: 1; font-size: .92em; font-weight: 700; letter-spacing: 0; color: var(--on-ikb); }
+html[data-lang="zh"] .hero__name .han, html[data-lang="ja"] .hero__name .han { order: 1; font-size: .92em; font-weight: 700; letter-spacing: 0; color: var(--on-ikb); }
+.hero__name .kana { order: 2; font-size: .3em; font-weight: 500; letter-spacing: 0; color: var(--on-ikb-mute); }
+html[data-lang="ja"] .hero__name [data-scramble] { display: none; }
 html[data-lang="zh"] .hero__name [data-scramble] { order: 2; font-size: .3em; font-weight: 500; letter-spacing: -0.02em; color: var(--on-ikb-mute); }
 .hero::before { content: ""; position: absolute; inset: -32vh 0 0 0; z-index: -1; pointer-events: none; background: linear-gradient(to top, rgba(0,47,167,.88) 0%, rgba(0,47,167,.84) 14%, rgba(0,47,167,.72) 28%, rgba(0,47,167,.54) 42%, rgba(0,47,167,.34) 56%, rgba(0,47,167,.17) 70%, rgba(0,47,167,.06) 84%, rgba(0,47,167,0) 100%); }
 .hero__row { display: flex; flex-wrap: wrap; gap: 18px 48px; align-items: flex-end; justify-content: space-between; }
@@ -155,7 +170,7 @@ html[data-lang="zh"] .hero__name [data-scramble] { order: 2; font-size: .3em; fo
 .polaris { position: absolute; transform: translate(18px, -8px); color: var(--on-ikb-mute); display: grid; gap: 2px; pointer-events: none; white-space: nowrap; }
 .polaris strong { color: var(--on-ikb); font-weight: 500; }
 @media (max-width: 760px) { .polaris .coords { display: none; } .polaris { transform: translate(calc(-100% - 16px), -8px); text-align: right; } }
-html[data-lang="zh"] .sec__title { letter-spacing: -0.02em; font-size: clamp(2.375rem, 1rem + 5vw, 5.9rem); line-height: 1.04; }
+html[data-lang="zh"] .sec__title, html[data-lang="ja"] .sec__title { letter-spacing: -0.02em; font-size: clamp(2.375rem, 1rem + 5vw, 5.9rem); line-height: 1.04; }
 .scrollhint { position: absolute; right: var(--gutter-r); top: calc(env(safe-area-inset-top, 0px) + 76px); display: flex; gap: 10px; align-items: center; color: var(--on-ikb-mute); }
 @media (min-width: 900px) { .scrollhint { right: max(40px, env(safe-area-inset-right, 0px)); } }
 @media (max-width: 760px) { .scrollhint { top: calc(env(safe-area-inset-top, 0px) + 112px); } }
@@ -172,7 +187,7 @@ html[data-lang="zh"] .sec__title { letter-spacing: -0.02em; font-size: clamp(2.3
 @media (max-width: 900px) { .sec__meta, .sec__body { grid-column: 1 / -1; } }
 .sec__title { margin: 0 0 clamp(28px, 4vw, 56px); font-size: clamp(2.75rem, 1rem + 6vw, 6.875rem); line-height: .92; letter-spacing: -0.05em; font-weight: 600; text-wrap: balance; }
 .lead { margin: 0; font-size: clamp(1.375rem, 1rem + 1.2vw, 2.125rem); line-height: 1.32; letter-spacing: -0.015em; font-weight: 400; max-width: 30ch; text-wrap: pretty; }
-html[data-lang="zh"] .lead { max-width: 24em; }
+html[data-lang="zh"] .lead, html[data-lang="ja"] .lead { max-width: 24em; }
 .ints { list-style: none; padding: 0; margin: clamp(40px, 5vw, 72px) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
 .ints li { padding: 20px 24px 22px 0; border-bottom: 1px solid var(--line); display: grid; gap: 6px; }
 .ints strong { font-weight: 600; font-size: 1.1875rem; letter-spacing: -0.01em; }
@@ -226,7 +241,7 @@ html.still .rwi { transition: none; }
 .hinge__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hinge__state { grid-area: 1 / 1; display: grid; gap: 18px; align-content: center; }
 .hinge__state h2 { margin: 0; font-size: clamp(2.375rem, 1rem + 3.2vw, 4.5rem); line-height: .95; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance; }
-html[data-lang="zh"] .hinge__state h2 { letter-spacing: -0.02em; line-height: 1.08; font-size: clamp(1.875rem, 1rem + 2.6vw, 3.625rem); word-break: keep-all; }
+html[data-lang="zh"] .hinge__state h2, html[data-lang="ja"] .hinge__state h2 { letter-spacing: -0.02em; line-height: 1.08; font-size: clamp(1.875rem, 1rem + 2.6vw, 3.625rem); word-break: keep-all; }
 .ptile b, .spec { text-transform: none; }
 .hinge__state p { margin: 0; max-width: 42ch; font-size: 1.0938rem; color: var(--ink); text-wrap: pretty; }
 .hinge__state .mono { color: var(--mute); }
@@ -343,19 +358,20 @@ html.still .status__dot { animation-play-state: paused; }
   <div class="wrap">
     <a class="brand" href="#top">beichen<b>.</b>li</a>
     <nav class="nav__links" aria-label="Sections">
-      <a href="#about"><span lang="en">About</span><span lang="zh-Hans">简介</span></a>
-      <a href="#research"><span lang="en">Research</span><span lang="zh-Hans">研究</span></a>
-      <a href="#projects"><span lang="en">Projects</span><span lang="zh-Hans">项目</span></a>
-      <a href="#experience"><span lang="en">Experience</span><span lang="zh-Hans">经历</span></a>
-      <a href="#contact"><span lang="en">Contact</span><span lang="zh-Hans">联系</span></a>
+      <a href="#about"><span lang="en">About</span><span lang="zh-Hans">简介</span><span lang="ja">概要</span></a>
+      <a href="#research"><span lang="en">Research</span><span lang="zh-Hans">研究</span><span lang="ja">研究</span></a>
+      <a href="#projects"><span lang="en">Projects</span><span lang="zh-Hans">项目</span><span lang="ja">プロジェクト</span></a>
+      <a href="#experience"><span lang="en">Experience</span><span lang="zh-Hans">经历</span><span lang="ja">経歴</span></a>
+      <a href="#contact"><span lang="en">Contact</span><span lang="zh-Hans">联系</span><span lang="ja">連絡先</span></a>
     </nav>
     <div class="nav__tools">
-      <button class="iconbtn" id="motionBtn" type="button" aria-label="Pause motion" data-tip-en="Pause motion" data-tip-zh="暂停动画">
+      <button class="iconbtn" id="motionBtn" type="button" aria-label="Pause motion" data-tip-en="Pause motion" data-tip-zh="暂停动画" data-tip-ja="動きを止める">
         <svg id="motionIcon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 3v10M10.5 3v10"/></svg>
       </button>
       <div class="pill" role="group" aria-label="Language">
         <button type="button" data-set-lang="en" aria-pressed="true"><span>EN</span></button>
         <button type="button" data-set-lang="zh" aria-pressed="false"><span class="han">中</span></button>
+        <button type="button" data-set-lang="ja" aria-pressed="false"><span class="han">日</span></button>
       </div>
     </div>
   </div>
@@ -374,18 +390,18 @@ html.still .status__dot { animation-play-state: paused; }
     <div class="scrollhint mono" id="hint" aria-hidden="true">
       <span id="hintTxt">000</span>
       <span class="scrollhint__bar"><i id="hintBar"></i></span>
-      <span lang="en">Scroll</span><span lang="zh-Hans">向下</span>
+      <span lang="en">Scroll</span><span lang="zh-Hans">向下</span><span lang="ja">スクロール</span>
     </div>
 
     <div class="hero" id="hero">
       <div class="wrap">
-        <p class="hero__eyebrow mono" style="margin:0"><span lang="en">Master of AI, Monash University · graduating Dec 2026</span><span lang="zh-Hans">莫纳什大学人工智能硕士在读 · 2026 年 12 月毕业</span></p>
-        <h1 class="hero__name"><span class="sr">Beichen Li 李北辰</span><span data-scramble aria-hidden="true">Beichen Li</span><span class="han" data-scramble-han aria-hidden="true">李北辰</span></h1>
+        <p class="hero__eyebrow mono" style="margin:0"><span lang="en">Master of AI, Monash University · graduating Dec 2026</span><span lang="zh-Hans">莫纳什大学人工智能硕士在读 · 2026 年 12 月毕业</span><span lang="ja">モナシュ大学 人工知能修士課程在籍 · 2026年12月修了予定</span></p>
+        <h1 class="hero__name"><span class="sr">Beichen Li 李北辰（リ・ホクシン）</span><span data-scramble aria-hidden="true">Beichen Li</span><span class="han" data-scramble-han aria-hidden="true">李北辰</span><span class="kana" lang="ja" aria-hidden="true">リ・ホクシン</span></h1>
         <div class="hero__row">
-          <p class="hero__lede"><span lang="en">I trained as a chemist and now work in machine learning, on generative models for CJK type and on what interatomic potentials learn from their training labels.</span><span lang="zh-Hans">我本科学化学，现在做机器学习，研究中日韩字体的生成模型，以及原子间势从训练标签中学到了什么。</span></p>
+          <p class="hero__lede"><span lang="en">I trained as a chemist and now work in machine learning, on generative models for CJK type and on what interatomic potentials learn from their training labels.</span><span lang="zh-Hans">我本科学化学，现在做机器学习，研究中日韩字体的生成模型，以及原子间势从训练标签中学到了什么。</span><span lang="ja">学部で化学を学び、いまは機械学習に取り組んでいます。中日韓フォントの生成モデルと、原子間ポテンシャルが学習ラベルから何を学ぶのかを研究しています。</span></p>
           <div class="status">
-            <span class="status__item"><i class="status__dot" aria-hidden="true"></i><span lang="en">Applying for PhD positions · 2027 intake</span><span lang="zh-Hans">正在申请 2027 年入学的博士项目</span></span>
-            <span class="status__item"><i class="status__dot" aria-hidden="true" style="animation-delay:1.2s"></i><span lang="en">Open to ML research &amp; engineering roles</span><span lang="zh-Hans">同时寻找机器学习研究与工程岗位</span></span>
+            <span class="status__item"><i class="status__dot" aria-hidden="true"></i><span lang="en">Applying for PhD positions · 2027 intake</span><span lang="zh-Hans">正在申请 2027 年入学的博士项目</span><span lang="ja">2027年入学の博士課程に出願中</span></span>
+            <span class="status__item"><i class="status__dot" aria-hidden="true" style="animation-delay:1.2s"></i><span lang="en">Open to ML research &amp; engineering roles</span><span lang="zh-Hans">同时寻找机器学习研究与工程岗位</span><span lang="ja">機械学習の研究職・エンジニア職も探しています</span></span>
           </div>
         </div>
       </div>
@@ -398,15 +414,15 @@ html.still .status__dot { animation-play-state: paused; }
 
   <section class="sec" id="about" aria-labelledby="about-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">About</span><span lang="zh-Hans">简介</span><span lang="en">Lanzhou → Monash</span><span lang="zh-Hans">兰州大学 → 莫纳什大学</span></div>
+      <div class="sec__meta mono"><span lang="en">About</span><span lang="zh-Hans">简介</span><span lang="ja">概要</span><span lang="en">Lanzhou → Monash</span><span lang="zh-Hans">兰州大学 → 莫纳什大学</span><span lang="ja">蘭州大学 → モナシュ大学</span></div>
       <div class="sec__body">
-        <h2 class="sec__title" id="about-h" data-scramble-on-view><span lang="en">Chemistry, then machine learning.</span><span lang="zh-Hans">先学化学，后做机器学习。</span></h2>
-        <p class="lead"><span lang="en">I studied applied chemistry at Lanzhou University and am finishing a Master of Artificial Intelligence at Monash. In my research I fix the design and freeze the benchmark before I look at any results, and keep every run reproducible.</span><span lang="zh-Hans">我本科在兰州大学读应用化学，现在在莫纳什大学读人工智能硕士，2026 年 12 月毕业。做研究时，我在看结果之前定好实验设计、冻结基准测试，并保证每一次实验都能复现。</span></p>
+        <h2 class="sec__title" id="about-h" data-scramble-on-view><span lang="en">Chemistry, then machine learning.</span><span lang="zh-Hans">先学化学，后做机器学习。</span><span lang="ja">化学から、機械学習へ。</span></h2>
+        <p class="lead"><span lang="en">I studied applied chemistry at Lanzhou University and am finishing a Master of Artificial Intelligence at Monash. In my research I fix the design and freeze the benchmark before I look at any results, and keep every run reproducible.</span><span lang="zh-Hans">我本科在兰州大学读应用化学，现在在莫纳什大学读人工智能硕士，2026 年 12 月毕业。做研究时，我在看结果之前定好实验设计、冻结基准测试，并保证每一次实验都能复现。</span><span lang="ja">蘭州大学で応用化学を学び、現在はモナシュ大学の人工知能修士課程に在籍しています（2026年12月修了予定）。研究では、結果を見る前に実験計画を決めてベンチマークを凍結し、すべての実験を再現できるようにしています。</span></p>
         <ul class="ints">
-          <li><strong lang="en">Generative models for typography</strong><strong lang="zh-Hans">字体生成模型</strong><span lang="en">CJK glyph generation and vector fonts</span><span lang="zh-Hans">中日韩字形生成、矢量字体生成</span></li>
-          <li><strong lang="en">AI for Science</strong><strong lang="zh-Hans">AI for Science</strong><span lang="en">Machine-learned interatomic potentials and their labels</span><span lang="zh-Hans">机器学习原子间势及其训练标签</span></li>
-          <li><strong lang="en">Rigorous evaluation of ML</strong><strong lang="zh-Hans">机器学习的严谨评估</strong><span lang="en">Controlled experiments, pre-registration, measurement validity</span><span lang="zh-Hans">对照实验、预注册研究、测量效度</span></li>
-          <li><strong lang="en">Reliable AI systems</strong><strong lang="zh-Hans">可靠的 AI 系统</strong><span lang="en">LLMs behind rules, guardrails and fallbacks</span><span lang="zh-Hans">在规则、防护和兜底机制之下运行的大语言模型</span></li>
+          <li><strong lang="en">Generative models for typography</strong><strong lang="zh-Hans">字体生成模型</strong><strong lang="ja">フォント生成モデル</strong><span lang="en">CJK glyph generation and vector fonts</span><span lang="zh-Hans">中日韩字形生成、矢量字体生成</span><span lang="ja">中日韓の字形生成、ベクターフォント生成</span></li>
+          <li><strong lang="en">AI for Science</strong><strong lang="zh-Hans">AI for Science</strong><strong lang="ja">AI for Science</strong><span lang="en">Machine-learned interatomic potentials and their labels</span><span lang="zh-Hans">机器学习原子间势及其训练标签</span><span lang="ja">機械学習原子間ポテンシャルとその学習ラベル</span></li>
+          <li><strong lang="en">Rigorous evaluation of ML</strong><strong lang="zh-Hans">机器学习的严谨评估</strong><strong lang="ja">機械学習の厳密な評価</strong><span lang="en">Controlled experiments, pre-registration, measurement validity</span><span lang="zh-Hans">对照实验、预注册研究、测量效度</span><span lang="ja">対照実験、事前登録研究、測定の妥当性</span></li>
+          <li><strong lang="en">Reliable AI systems</strong><strong lang="zh-Hans">可靠的 AI 系统</strong><strong lang="ja">信頼できる AI システム</strong><span lang="en">LLMs behind rules, guardrails and fallbacks</span><span lang="zh-Hans">在规则、防护和兜底机制之下运行的大语言模型</span><span lang="ja">ルール・ガードレール・フォールバックのもとで動く大規模言語モデル</span></li>
         </ul>
       </div>
     </div>
@@ -417,25 +433,25 @@ html.still .status__dot { animation-play-state: paused; }
       <div class="wrap">
         <div class="hinge__copy">
           <div class="hinge__state" id="hingeA">
-            <span class="mono">U+9571 · <span class="hinge__han" style="font-size: 0.9375rem">镱</span> · <span lang="en">one character, two questions</span><span lang="zh-Hans">一个字，两个问题</span></span>
-            <h2 id="hinge-h"><span lang="en">Read it as type.</span><span lang="zh-Hans">把它当作字来读。</span></h2>
+            <span class="mono">U+9571 · <span class="hinge__han" style="font-size: 0.9375rem">镱</span> · <span lang="en">one character, two questions</span><span lang="zh-Hans">一个字，两个问题</span><span lang="ja">一つの字、二つの問い</span></span>
+            <h2 id="hinge-h"><span lang="en">Read it as type.</span><span lang="zh-Hans">把它当作字来读。</span><span lang="ja">文字として読む。</span></h2>
             <p lang="en">Its left half, <span class="hinge__han">钅</span>, is the simplified form of the metal radical. Japanese fonts write that radical as 金, so a Japanese font has never drawn 钅. Extending a font to characters built from parts it has never drawn is the problem behind my font study. In the study I create the gap on purpose: I remove one component family from a font's training glyphs and measure what that costs.</p>
-            <p lang="zh-Hans">左半边的 <span class="hinge__han">钅</span> 是简体的金字旁。日文字体把这个偏旁写作“金”，所以一款日文字体从没画过 钅。把字体扩展到由它没画过的部件组成的字，就是我的字体研究要解决的问题。实验里，我有意制造这种缺口：从字体的训练字形中删去一类部件，再测量这样做的代价。</p>          </div>
+            <p lang="zh-Hans">左半边的 <span class="hinge__han">钅</span> 是简体的金字旁。日文字体把这个偏旁写作“金”，所以一款日文字体从没画过 钅。把字体扩展到由它没画过的部件组成的字，就是我的字体研究要解决的问题。实验里，我有意制造这种缺口：从字体的训练字形中删去一类部件，再测量这样做的代价。</p><p lang="ja">左半分の <span class="hinge__han">钅</span> は、金偏の簡体字です。日本語のフォントはこの偏を「金」と書くので、日本語フォントが 钅 を描いたことは一度もありません。フォントを、まだ描いたことのない部品でできた字にまで広げること。それが私のフォント研究の課題です。実験ではこの欠落をあえて作り、ある部品類を学習字形から取り除いたときの代価を測ります。</p>          </div>
           <div class="hinge__state" id="hingeB" aria-hidden="true">
-            <span class="mono"><span lang="en">Element 70 · ytterbium</span><span lang="zh-Hans">第 70 号元素 · 镱</span></span>
-            <h2><span lang="en">Read it as matter.</span><span lang="zh-Hans">把它当作物质来读。</span></h2>
+            <span class="mono"><span lang="en">Element 70 · ytterbium</span><span lang="zh-Hans">第 70 号元素 · 镱</span><span lang="ja">原子番号 70 · イッテルビウム</span></span>
+            <h2><span lang="en">Read it as matter.</span><span lang="zh-Hans">把它当作物质来读。</span><span lang="ja">物質として読む。</span></h2>
             <p lang="en">The whole character means ytterbium, element 70. In 2023 the Materials Project changed the pseudopotential it uses for ytterbium. My AI for Science study asks whether foundation interatomic potentials inherit the pseudopotential convention of their training labels, where in the network it is carried, and whether a targeted edit can switch it.</p>
-            <p lang="zh-Hans">整个字指的是镱，第 70 号元素。2023 年，Materials Project 更换了镱所用的赝势。我的 AI for Science 研究要回答：通用机器学习势会不会继承训练标签的赝势约定，约定由网络的哪一部分承载，以及能否用一次有针对性的编辑切换它。</p>
+            <p lang="zh-Hans">整个字指的是镱，第 70 号元素。2023 年，Materials Project 更换了镱所用的赝势。我的 AI for Science 研究要回答：通用机器学习势会不会继承训练标签的赝势约定，约定由网络的哪一部分承载，以及能否用一次有针对性的编辑切换它。</p><p lang="ja">この字はイッテルビウム、原子番号 70 の元素を指します。2023年、Materials Project はイッテルビウムに用いる擬ポテンシャルを変更しました。私の AI for Science 研究が問うのは、汎用機械学習ポテンシャルが学習ラベルの擬ポテンシャルの慣習を受け継ぐのか、その慣習をネットワークのどこが担っているのか、そして狙いを定めた一度の編集で切り替えられるのか、です。</p>
             <div class="hinge__tile"><b>Yb</b><span class="mono">70</span><span class="mono">Yb_2 → Yb_3</span></div>
           </div>
           <div class="hinge__switch" role="group" aria-label="View the character as">
-            <button type="button" data-hinge="0" aria-pressed="true"><span lang="en">Type</span><span lang="zh-Hans">字形</span></button>
-            <button type="button" data-hinge="1" aria-pressed="false"><span lang="en">Matter</span><span lang="zh-Hans">物质</span></button>
+            <button type="button" data-hinge="0" aria-pressed="true"><span lang="en">Type</span><span lang="zh-Hans">字形</span><span lang="ja">字形</span></button>
+            <button type="button" data-hinge="1" aria-pressed="false"><span lang="en">Matter</span><span lang="zh-Hans">物质</span><span lang="ja">物質</span></button>
           </div>
         </div>
         <div class="hinge__stage" id="hingeStage">
           <canvas id="hingeCanvas" role="img" aria-label="The character 镱 drawn in dots, which regroup into atoms on a lattice"></canvas>
-          <div class="radbox" id="radbox" aria-hidden="true"><span class="mono"><span class="hinge__han" style="font-size: 0.8125rem">钅</span> · <span lang="en">absent from Japanese fonts</span><span lang="zh-Hans">日文字体里没有</span></span></div>
+          <div class="radbox" id="radbox" aria-hidden="true"><span class="mono"><span class="hinge__han" style="font-size: 0.8125rem">钅</span> · <span lang="en">absent from Japanese fonts</span><span lang="zh-Hans">日文字体里没有</span><span lang="ja">日本語フォントには無い</span></span></div>
           <span class="hinge__axis mono" id="hingeAxis" aria-hidden="true"></span>
         </div>
       </div>
@@ -444,24 +460,24 @@ html.still .status__dot { animation-play-state: paused; }
 
   <section class="sec" id="research" aria-labelledby="research-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">Research</span><span lang="zh-Hans">研究</span><span lang="en">Papers in preparation</span><span lang="zh-Hans">论文均在撰写中</span></div>
+      <div class="sec__meta mono"><span lang="en">Research</span><span lang="zh-Hans">研究</span><span lang="ja">研究</span><span lang="en">Papers in preparation</span><span lang="zh-Hans">论文均在撰写中</span><span lang="ja">論文はいずれも執筆中</span></div>
       <div class="sec__body">
-        <h2 class="sec__title" id="research-h" data-scramble-on-view><span lang="en">Two studies, planned in advance.</span><span lang="zh-Hans">两项研究，方案先于结果。</span></h2>
+        <h2 class="sec__title" id="research-h" data-scramble-on-view><span lang="en">Two studies, planned in advance.</span><span lang="zh-Hans">两项研究，方案先于结果。</span><span lang="ja">二つの研究、計画は結果より先に。</span></h2>
 
         <article class="study article" id="study-font">
           <span class="backdrop" aria-hidden="true">6×4</span>
           <div class="study__meta mono">
-            <span lang="en">Independent study</span><span lang="zh-Hans">独立研究</span>
-            <span lang="en">Aug 2026 – now</span><span lang="zh-Hans">2026.08 – 至今</span>
-            <span class="tag" lang="en">Paper in preparation · replication under way</span><span class="tag" lang="zh-Hans">论文撰写中 · 复现进行中</span>
+            <span lang="en">Independent study</span><span lang="zh-Hans">独立研究</span><span lang="ja">個人研究</span>
+            <span lang="en">Aug 2026 – now</span><span lang="zh-Hans">2026.08 – 至今</span><span lang="ja">2026年8月 – 現在</span>
+            <span class="tag" lang="en">Paper in preparation · replication under way</span><span class="tag" lang="zh-Hans">论文撰写中 · 复现进行中</span><span class="tag" lang="ja">論文執筆中 · 再現実験を実施中</span>
             <div class="spec" aria-hidden="true"><span class="spec__g">粉</span><span class="spec__base"></span><span class="spec__l mono" style="left:4px;top:3px">U+7C89</span><span class="spec__l mono" style="right:4px;top:calc(86% + 2px)">BASELINE 0</span></div>
           </div>
           <div class="study__main">
-            <h3><span lang="en">Component support gaps in CJK font generation</span><span lang="zh-Hans">中日韩字体生成中的<wbr>未见部件问题</span></h3>
+            <h3><span lang="en">Component support gaps in CJK font generation</span><span lang="zh-Hans">中日韩字体生成中的<wbr>未见部件问题</span><span lang="ja">中日韓フォント生成における<wbr>未見部品の問題</span></h3>
             <p lang="en">When a CJK font is extended beyond the few thousand characters it ships with, some new characters contain a <button type="button" class="term" data-card="glyph">component</button> the font never drew. I measure what that costs. Each target font is fine-tuned twice: once with every training glyph that contains a given component family removed, and once with the family kept. I then compare the generator's error on the same held-out characters. The design covers <button type="button" class="term" data-backdrop="study-font">6 fonts × 4 component families</button> (小, 日, 竹, 米), each with 3 random seeds. It is crossed with a generator pretrained on 330 other fonts, with or without that family in the pool. A placebo control instead removes random unrelated characters from the pretraining pool. A replication on a second, architecturally different generator is under way.</p>
-            <p lang="zh-Hans">把一款中日韩字体扩展到原有的几千字之外时，有些新字会包含字体从未画过的<span class="nb"><button type="button" class="term" data-card="glyph">部件</button>。</span>我测量这件事的代价。每款目标字体微调两次：一次删去训练字形中含某类部件的全部字，一次保留，然后在同一批留出字上比较生成器的误差。实验覆盖<button type="button" class="term" data-backdrop="study-font">6 款字体 × 4 类部件</button>（小、日、竹、米），每格 3 个随机种子；另与预训练条件交叉：生成器先在 330 款其他字体上预训练，预训练池含或不含这类部件。另设随机删除对照（即安慰剂对照）：从预训练池里随机删去与该部件无关的字。在另一种架构的生成器上的复现正在进行。</p>
+            <p lang="zh-Hans">把一款中日韩字体扩展到原有的几千字之外时，有些新字会包含字体从未画过的<span class="nb"><button type="button" class="term" data-card="glyph">部件</button>。</span>我测量这件事的代价。每款目标字体微调两次：一次删去训练字形中含某类部件的全部字，一次保留，然后在同一批留出字上比较生成器的误差。实验覆盖<button type="button" class="term" data-backdrop="study-font">6 款字体 × 4 类部件</button>（小、日、竹、米），每格 3 个随机种子；另与预训练条件交叉：生成器先在 330 款其他字体上预训练，预训练池含或不含这类部件。另设随机删除对照（即安慰剂对照）：从预训练池里随机删去与该部件无关的字。在另一种架构的生成器上的复现正在进行。</p><p lang="ja">中日韓フォントを元の数千字の外へ広げようとすると、新しい字の一部には、そのフォントが一度も描いたことのない<span class="nb"><button type="button" class="term" data-card="glyph">部品</button>が</span>含まれます。私はその代価を測っています。対象フォントごとに微調整を 2 回行います。一度はある部品類を含む学習字形をすべて除き、もう一度は残したまま。そのうえで、同じ留保文字に対する生成器の誤差を比べます。実験は<button type="button" class="term" data-backdrop="study-font">6 フォント × 4 部品類</button>（小・日・竹・米）で、各セルに乱数シードを 3 つ使います。さらに事前学習の条件と交差させます。生成器はまず他の 330 フォントで事前学習し、その事前学習プールにこの部品類を含めるかどうかを変えます。ランダム削除対照（いわゆるプラセボ対照）として、部品と無関係な字をプールからランダムに除く条件も設けています。別のアーキテクチャの生成器での再現実験を進めています。</p>
             <p class="study__stack mono" lang="en">PyTorch · diffusers. From-scratch GAN (pix2pix) and flow-matching generators, trained on NVIDIA L4, L40S and A100 across Colab, AWS and Nectar Research Cloud.</p>
-            <p class="study__stack mono" lang="zh-Hans">PyTorch · diffusers。从零实现的 GAN（pix2pix）与流匹配生成器，在 Colab、AWS 和 Nectar 研究云的 NVIDIA L4、L40S、A100 上训练。</p>
+            <p class="study__stack mono" lang="zh-Hans">PyTorch · diffusers。从零实现的 GAN（pix2pix）与流匹配生成器，在 Colab、AWS 和 Nectar 研究云的 NVIDIA L4、L40S、A100 上训练。</p><p class="study__stack mono" lang="ja">PyTorch · diffusers。GAN（pix2pix）とフローマッチング生成器をゼロから実装し、Colab、AWS、Nectar Research Cloud の NVIDIA L4、L40S、A100 で学習。</p>
           </div>
         </article>
 
@@ -469,38 +485,38 @@ html.still .status__dot { animation-play-state: paused; }
           <span class="backdrop" aria-hidden="true">70</span>
           <div class="study__meta mono">
             <span>AI for Science</span>
-            <span lang="en">Nov 2026 – now</span><span lang="zh-Hans">2026.11 – 至今</span>
-            <span lang="en">Analysis plan frozen Nov 2026</span><span lang="zh-Hans">分析计划已于 2026 年 11 月冻结</span>
-            <span class="tag" lang="en"><span><span style="text-transform:none">arXiv</span> preprint planned Dec 2026</span></span><span class="tag" lang="zh-Hans"><span>计划 2026 年 12 月发布 <span style="text-transform:none">arXiv</span> 预印本</span></span>
-            <span class="study__note" lang="en">Code and data released with the submission (MIT / CC BY 4.0)</span><span class="study__note" lang="zh-Hans">代码与数据随投稿公开（MIT / CC BY 4.0）</span>
+            <span lang="en">Nov 2026 – now</span><span lang="zh-Hans">2026.11 – 至今</span><span lang="ja">2026年11月 – 現在</span>
+            <span lang="en">Analysis plan frozen Nov 2026</span><span lang="zh-Hans">分析计划已于 2026 年 11 月冻结</span><span lang="ja">分析計画は2026年11月に凍結</span>
+            <span class="tag" lang="en"><span><span style="text-transform:none">arXiv</span> preprint planned Dec 2026</span></span><span class="tag" lang="zh-Hans"><span>计划 2026 年 12 月发布 <span style="text-transform:none">arXiv</span> 预印本</span></span><span class="tag" lang="ja"><span>2026年12月に <span style="text-transform:none">arXiv</span> プレプリントを公開予定</span></span>
+            <span class="study__note" lang="en">Code and data released with the submission (MIT / CC BY 4.0)</span><span class="study__note" lang="zh-Hans">代码与数据随投稿公开（MIT / CC BY 4.0）</span><span class="study__note" lang="ja">コードとデータは投稿時に公開（MIT / CC BY 4.0）</span>
             <div class="ptile" aria-hidden="true"><span class="mono">70</span><b>Yb</b><span class="mono">Ytterbium</span><span class="mono">173.045</span></div>
           </div>
           <div class="study__main">
-            <h3><span lang="en">Pseudopotential conventions in foundation interatomic potentials</span><span lang="zh-Hans">通用机器学习势<wbr>如何继承赝势约定</span></h3>
+            <h3><span lang="en">Pseudopotential conventions in foundation interatomic potentials</span><span lang="zh-Hans">通用机器学习势<wbr>如何继承赝势约定</span><span lang="ja">汎用機械学習ポテンシャルは<wbr>擬ポテンシャルの慣習をどう受け継ぐか</span></h3>
             <p lang="en">Foundation interatomic potentials are trained on DFT labels, and the choices behind those labels are not fixed. In 2023 the Materials Project changed the pseudopotential it uses for <button type="button" class="term" data-card="yb">ytterbium</button> from Yb_2 to Yb_3. Models of the same architecture (MACE, eqV2, Nequix) have been released twice: once trained on MPtrj, built before the change, and once on OMat24, which uses Yb_3. This gives a natural experiment. I ask whether the models inherit the convention of their labels, where in the network it is carried, and whether retraining only a small, ytterbium-specific set of weights can move a model from one convention to the other without changing its other elements.</p>
-            <p lang="zh-Hans">通用机器学习原子间势（基础模型）用 DFT 计算的标签训练，而这些标签背后的计算设置并非一成不变。2023 年，Materials Project 把<button type="button" class="term" data-card="yb">镱</button>的赝势从 Yb_2 换成了 Yb_3。同一种架构（MACE、eqV2、Nequix）的模型都有两个公开版本：一个用更换之前构建的 MPtrj 训练，一个用采用 Yb_3 的 OMat24 训练。这构成了一个自然实验。我研究这些模型是否继承了训练标签的约定，约定由网络的哪一部分承载，以及只重训一小组镱专属的权重，能否把模型从一种约定移到另一种，而不改变其他元素的结果。</p>
+            <p lang="zh-Hans">通用机器学习原子间势（基础模型）用 DFT 计算的标签训练，而这些标签背后的计算设置并非一成不变。2023 年，Materials Project 把<button type="button" class="term" data-card="yb">镱</button>的赝势从 Yb_2 换成了 Yb_3。同一种架构（MACE、eqV2、Nequix）的模型都有两个公开版本：一个用更换之前构建的 MPtrj 训练，一个用采用 Yb_3 的 OMat24 训练。这构成了一个自然实验。我研究这些模型是否继承了训练标签的约定，约定由网络的哪一部分承载，以及只重训一小组镱专属的权重，能否把模型从一种约定移到另一种，而不改变其他元素的结果。</p><p lang="ja">汎用機械学習原子間ポテンシャル（基盤モデル）は DFT 計算によるラベルで学習しますが、そのラベルを支える計算設定は不変ではありません。2023年、Materials Project は<button type="button" class="term" data-card="yb">イッテルビウム</button>の擬ポテンシャルを Yb_2 から Yb_3 に替えました。同じアーキテクチャ（MACE、eqV2、Nequix）のモデルにはそれぞれ公開版が二つあり、一つは変更前に構築された MPtrj で、もう一つは Yb_3 を採用した OMat24 で学習されています。これが自然実験になります。私は、これらのモデルが学習ラベルの慣習を受け継いでいるか、その慣習をネットワークのどの部分が担っているか、そしてイッテルビウム固有の少数の重みだけを再学習すれば、他の元素の結果を変えずにモデルを一方の慣習から他方へ移せるかを調べています。</p>
             <p class="study__stack mono" lang="en">PyTorch · mace-torch · fairchem · Nequix. A fault-tolerant job queue runs training and relaxation jobs across cloud GPUs (A10, A16, T4) and a laptop RTX 4060, with cross-GPU reproducibility checks.</p>
-            <p class="study__stack mono" lang="zh-Hans">PyTorch · mace-torch · fairchem · Nequix。自写的容错任务队列在云端 GPU（A10、A16、T4）和笔记本 RTX 4060 之间调度训练与弛豫任务，并做跨 GPU 的可复现性检查。</p>
+            <p class="study__stack mono" lang="zh-Hans">PyTorch · mace-torch · fairchem · Nequix。自写的容错任务队列在云端 GPU（A10、A16、T4）和笔记本 RTX 4060 之间调度训练与弛豫任务，并做跨 GPU 的可复现性检查。</p><p class="study__stack mono" lang="ja">PyTorch · mace-torch · fairchem · Nequix。自作の耐障害ジョブキューで、クラウド GPU（A10、A16、T4）とノート PC の RTX 4060 に学習と構造緩和のジョブを振り分け、GPU 間の再現性も確認しています。</p>
           </div>
         </article>
 
-        <p class="thesis"><span class="mono" lang="en">BSc thesis · Lanzhou University · 2023</span><span class="mono" lang="zh-Hans">本科论文 · 兰州大学 · 2023</span><span lang="en">Synthesis and fluorescence of a neodymium 2-azido-4,4′-biphenyldicarboxylate complex. I did all the experimental work.</span><span lang="zh-Hans">2-叠氮基-4,4′-联苯二甲酸钕配合物的合成与荧光性质研究，全部实验工作独立完成。</span></p>
+        <p class="thesis"><span class="mono" lang="en">BSc thesis · Lanzhou University · 2023</span><span class="mono" lang="zh-Hans">本科论文 · 兰州大学 · 2023</span><span class="mono" lang="ja">学士論文 · 蘭州大学 · 2023</span><span lang="en">Synthesis and fluorescence of a neodymium 2-azido-4,4′-biphenyldicarboxylate complex. I did all the experimental work.</span><span lang="zh-Hans">2-叠氮基-4,4′-联苯二甲酸钕配合物的合成与荧光性质研究，全部实验工作独立完成。</span><span lang="ja">2-アジド-4,4′-ビフェニルジカルボン酸ネオジム錯体の合成と蛍光特性に関する研究。実験はすべて単独で行いました。</span></p>
       </div>
     </div>
   </section>
 
   <section class="sec" id="projects" aria-labelledby="projects-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">Projects &amp; open source</span><span lang="zh-Hans">项目与开源</span><span lang="en">6 selected</span><span lang="zh-Hans">精选 6 项</span></div>
+      <div class="sec__meta mono"><span lang="en">Projects &amp; open source</span><span lang="zh-Hans">项目与开源</span><span lang="ja">プロジェクトとオープンソース</span><span lang="en">6 selected</span><span lang="zh-Hans">精选 6 项</span><span lang="ja">6 件を厳選</span></div>
       <div class="sec__body">
-        <h2 class="sec__title" id="projects-h" data-scramble-on-view><span lang="en">Selected projects.</span><span lang="zh-Hans">精选项目。</span></h2>
+        <h2 class="sec__title" id="projects-h" data-scramble-on-view><span lang="en">Selected projects.</span><span lang="zh-Hans">精选项目。</span><span lang="ja">主なプロジェクト。</span></h2>
         <div class="rows">
-          <a class="row row--spec" href="https://fonts.google.com/specimen/LXGW+WenKai+TC" target="_blank" rel="noopener"><span class="row__name" data-scramble-hover>LXGW WenKai</span><span class="row__spec" lang="zh" aria-hidden="true">霞鹜文楷</span><span class="row__what"><span lang="en">500+ AI-generated glyphs across the family; the TC edition is on Google Fonts</span><span lang="zh-Hans">为整个霞鹜文楷系列补全 500 多个 AI 生成的字形，繁体版已收录于 Google Fonts</span></span><span class="row__stack row__dim mono">CNN · glyphs</span><span class="row__dim mono">2023–24</span><span class="row__go" aria-hidden="true">↗</span></a>
-          <a class="row" href="https://github.com/Beicxxxx/ColorOS-Font-Injector" target="_blank" rel="noopener" data-preview="coloros"><span class="row__name" data-scramble-hover>ColorOS Font Injector</span><span class="row__what"><span lang="en">System fonts on locked, non-rooted phones, swapped inside a 30 ms window</span><span lang="zh-Hans">在未 Root 的手机上替换系统字体，在约 30 毫秒的窗口内完成</span></span><span class="row__stack row__dim mono">Java · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
-          <div class="row row--static" data-preview="edibli"><span class="row__name">Edibli</span><span class="row__what"><span lang="en">Food-label scanner: rules decide every allergen verdict, a LoRA-tuned LLM only explains</span><span lang="zh-Hans">食品标签扫描应用：过敏原判断全部由规则做出，微调后的大模型只负责解释</span></span><span class="row__stack row__dim mono">Node · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true"></span></div>
-          <a class="row" href="https://github.com/Beicxxxx/cross-harness-sync" target="_blank" rel="noopener" data-preview="chs"><span class="row__name" data-scramble-hover>cross-harness-sync</span><span class="row__what"><span lang="en">Lets several AI coding agents hand off one research project across machines, with state kept in Git</span><span lang="zh-Hans">让多个 AI 编程智能体跨机器接力同一个研究项目，状态保存在 Git 中</span></span><span class="row__stack row__dim mono">Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
-          <a class="row" href="https://github.com/Beicxxxx/fx-sentinel" target="_blank" rel="noopener" data-preview="fx"><span class="row__name" data-scramble-hover>fx-sentinel</span><span class="row__what"><span lang="en">Exchange-rate monitor: an Android app and a Telegram bot with threshold alerts and 7- or 30-day scenarios</span><span lang="zh-Hans">汇率监控：安卓应用和 Telegram 机器人，支持阈值提醒和 7 天或 30 天情景预测</span></span><span class="row__stack row__dim mono">Flutter · Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
-          <a class="row" href="https://github.com/Beicxxxx/openfood-au" target="_blank" rel="noopener" data-preview="off"><span class="row__name" data-scramble-hover>openfood-au</span><span class="row__what"><span lang="en">Open Food Facts pipeline for Australian products</span><span lang="zh-Hans">澳洲商品的 Open Food Facts 开放数据管线</span></span><span class="row__stack row__dim mono">Python · SQLite</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row row--spec" href="https://fonts.google.com/specimen/LXGW+WenKai+TC" target="_blank" rel="noopener"><span class="row__name" data-scramble-hover>LXGW WenKai</span><span class="row__spec" lang="zh" aria-hidden="true">霞鹜文楷</span><span class="row__what"><span lang="en">500+ AI-generated glyphs across the family; the TC edition is on Google Fonts</span><span lang="zh-Hans">为整个霞鹜文楷系列补全 500 多个 AI 生成的字形，繁体版已收录于 Google Fonts</span><span lang="ja">LXGW WenKai ファミリー全体に AI で生成した字形を 500 字以上追加。繁体字版は Google Fonts に収録</span></span><span class="row__stack row__dim mono">CNN · glyphs</span><span class="row__dim mono">2023–24</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/ColorOS-Font-Injector" target="_blank" rel="noopener" data-preview="coloros"><span class="row__name" data-scramble-hover>ColorOS Font Injector</span><span class="row__what"><span lang="en">System fonts on locked, non-rooted phones, swapped inside a 30 ms window</span><span lang="zh-Hans">在未 Root 的手机上替换系统字体，在约 30 毫秒的窗口内完成</span><span lang="ja">root 化していないスマートフォンのシステムフォントを、約 30 ミリ秒の隙間で差し替える</span></span><span class="row__stack row__dim mono">Java · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <div class="row row--static" data-preview="edibli"><span class="row__name">Edibli</span><span class="row__what"><span lang="en">Food-label scanner: rules decide every allergen verdict, a LoRA-tuned LLM only explains</span><span lang="zh-Hans">食品标签扫描应用：过敏原判断全部由规则做出，微调后的大模型只负责解释</span><span lang="ja">食品ラベルのスキャンアプリ：アレルゲンの判定はすべてルールが行い、微調整した LLM は説明だけを担当</span></span><span class="row__stack row__dim mono">Node · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true"></span></div>
+          <a class="row" href="https://github.com/Beicxxxx/cross-harness-sync" target="_blank" rel="noopener" data-preview="chs"><span class="row__name" data-scramble-hover>cross-harness-sync</span><span class="row__what"><span lang="en">Lets several AI coding agents hand off one research project across machines, with state kept in Git</span><span lang="zh-Hans">让多个 AI 编程智能体跨机器接力同一个研究项目，状态保存在 Git 中</span><span lang="ja">複数の AI コーディングエージェントが、マシンをまたいで一つの研究プロジェクトを引き継げるようにする。状態は Git に保存</span></span><span class="row__stack row__dim mono">Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/fx-sentinel" target="_blank" rel="noopener" data-preview="fx"><span class="row__name" data-scramble-hover>fx-sentinel</span><span class="row__what"><span lang="en">Exchange-rate monitor: an Android app and a Telegram bot with threshold alerts and 7- or 30-day scenarios</span><span lang="zh-Hans">汇率监控：安卓应用和 Telegram 机器人，支持阈值提醒和 7 天或 30 天情景预测</span><span lang="ja">為替モニター：Android アプリと Telegram ボット。しきい値アラートと、7 日または 30 日のシナリオ予測</span></span><span class="row__stack row__dim mono">Flutter · Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/openfood-au" target="_blank" rel="noopener" data-preview="off"><span class="row__name" data-scramble-hover>openfood-au</span><span class="row__what"><span lang="en">Open Food Facts pipeline for Australian products</span><span lang="zh-Hans">澳洲商品的 Open Food Facts 开放数据管线</span><span lang="ja">オーストラリアの商品向け Open Food Facts データパイプライン</span></span><span class="row__stack row__dim mono">Python · SQLite</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>
@@ -508,13 +524,13 @@ html.still .status__dot { animation-play-state: paused; }
 
   <section class="sec" id="experience" aria-labelledby="exp-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">Experience &amp; education</span><span lang="zh-Hans">经历与教育</span></div>
+      <div class="sec__meta mono"><span lang="en">Experience &amp; education</span><span lang="zh-Hans">经历与教育</span><span lang="ja">経歴と学歴</span></div>
       <div class="sec__body">
-        <h2 class="sec__title" id="exp-h" data-scramble-on-view><span lang="en">Work and education.</span><span lang="zh-Hans">工作与教育。</span></h2>
+        <h2 class="sec__title" id="exp-h" data-scramble-on-view><span lang="en">Work and education.</span><span lang="zh-Hans">工作与教育。</span><span lang="ja">職歴と学歴。</span></h2>
         <div class="entries">
-          <div class="entry"><span class="entry__when mono"><span lang="en">Mar 2025 – Dec 2026</span><span lang="zh-Hans">2025.03 – 2026.12</span></span><div class="entry__main"><h3><span lang="en">Master of Artificial Intelligence, Monash University</span><span lang="zh-Hans">人工智能硕士，莫纳什大学</span></h3><p lang="en">Deep Learning · Fundamentals of AI · IT Research &amp; Innovation Methods · Industry Experience Studio</p><p lang="zh-Hans">深度学习 · 人工智能基础 · IT 研究与创新方法 · 行业实践项目</p></div></div>
-          <div class="entry"><span class="entry__when mono"><span lang="en">Apr – Nov 2025</span><span lang="zh-Hans">2025.04 – 2025.11</span></span><div class="entry__main"><h3><span lang="en">IT &amp; AI Solutions Assistant, New Asian Supermarket</span><span lang="zh-Hans">IT 与 AI 解决方案助理，New Asian Supermarket</span></h3><p lang="en">Deployed an image-recognition model that replaced manual product entry; built dynamic pricing and supplier matching; ran the databases, tools, website and network.</p><p lang="zh-Hans">部署了取代人工录入的商品图像识别模型；开发动态定价与供应商匹配系统；维护数据库、内部工具、公司网站和网络。</p></div></div>
-          <div class="entry"><span class="entry__when mono"><span lang="en">Sep 2019 – Jun 2023</span><span lang="zh-Hans">2019.09 – 2023.06</span></span><div class="entry__main"><h3><span lang="en">BSc in Applied Chemistry, Lanzhou University</span><span lang="zh-Hans">应用化学专业 理学学士，兰州大学</span></h3><p lang="en">Thesis on a neodymium complex, a lanthanide metal–organic framework.</p><p lang="zh-Hans">毕业论文研究一种钕配合物（镧系金属–有机框架）。</p></div></div>
+          <div class="entry"><span class="entry__when mono"><span lang="en">Mar 2025 – Dec 2026</span><span lang="zh-Hans">2025.03 – 2026.12</span><span lang="ja">2025年3月 – 2026年12月</span></span><div class="entry__main"><h3><span lang="en">Master of Artificial Intelligence, Monash University</span><span lang="zh-Hans">人工智能硕士，莫纳什大学</span><span lang="ja">人工知能修士、モナシュ大学</span></h3><p lang="en">Deep Learning · Fundamentals of AI · IT Research &amp; Innovation Methods · Industry Experience Studio</p><p lang="zh-Hans">深度学习 · 人工智能基础 · IT 研究与创新方法 · 行业实践项目</p><p lang="ja">深層学習 · 人工知能基礎 · IT 研究・イノベーション方法論 · 産業実践プロジェクト</p></div></div>
+          <div class="entry"><span class="entry__when mono"><span lang="en">Apr – Nov 2025</span><span lang="zh-Hans">2025.04 – 2025.11</span><span lang="ja">2025年4月 – 2025年11月</span></span><div class="entry__main"><h3><span lang="en">IT &amp; AI Solutions Assistant, New Asian Supermarket</span><span lang="zh-Hans">IT 与 AI 解决方案助理，New Asian Supermarket</span><span lang="ja">IT・AI ソリューションアシスタント、New Asian Supermarket</span></h3><p lang="en">Deployed an image-recognition model that replaced manual product entry; built dynamic pricing and supplier matching; ran the databases, tools, website and network.</p><p lang="zh-Hans">部署了取代人工录入的商品图像识别模型；开发动态定价与供应商匹配系统；维护数据库、内部工具、公司网站和网络。</p><p lang="ja">手入力に代わる商品画像認識モデルを導入し、動的価格設定と仕入先マッチングのシステムを開発。データベース、社内ツール、会社のウェブサイト、ネットワークの管理も担当。</p></div></div>
+          <div class="entry"><span class="entry__when mono"><span lang="en">Sep 2019 – Jun 2023</span><span lang="zh-Hans">2019.09 – 2023.06</span><span lang="ja">2019年9月 – 2023年6月</span></span><div class="entry__main"><h3><span lang="en">BSc in Applied Chemistry, Lanzhou University</span><span lang="zh-Hans">应用化学专业 理学学士，兰州大学</span><span lang="ja">理学士（応用化学）、蘭州大学</span></h3><p lang="en">Thesis on a neodymium complex, a lanthanide metal–organic framework.</p><p lang="zh-Hans">毕业论文研究一种钕配合物（镧系金属–有机框架）。</p><p lang="ja">卒業論文ではネオジム錯体（ランタニド金属–有機構造体）を研究。</p></div></div>
         </div>
       </div>
     </div>
@@ -522,17 +538,17 @@ html.still .status__dot { animation-play-state: paused; }
 
   <section class="sec" id="contact" aria-labelledby="contact-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">Contact</span><span lang="zh-Hans">联系</span></div>
+      <div class="sec__meta mono"><span lang="en">Contact</span><span lang="zh-Hans">联系</span><span lang="ja">連絡先</span></div>
       <div class="sec__body">
         <h2 class="sr" id="contact-h">Contact</h2>
         <div class="mail">
           <a class="mail__addr" id="mailAddr" href="mailto:me@beichen.li">me@beichen.li</a>
         </div>
         <div class="links">
-          <button class="btn" type="button" id="copyBtn"><span><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span></span><svg class="btn__ic" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z"/><path d="M10.5 5.5v-3h-8v8h3"/></svg></button>
+          <button class="btn" type="button" id="copyBtn"><span><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span><span lang="ja" data-copy-label>アドレスをコピー</span></span><svg class="btn__ic" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z"/><path d="M10.5 5.5v-3h-8v8h3"/></svg></button>
           <a class="btn" href="https://github.com/Beicxxxx" target="_blank" rel="noopener"><span>GitHub</span><span class="btn__ic" aria-hidden="true">↗</span></a>
           <a class="btn" href="https://www.linkedin.com/in/beichen-li-818755389" target="_blank" rel="noopener"><span>LinkedIn</span><span class="btn__ic" aria-hidden="true">↗</span></a>
-          <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV (PDF)</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener"><span>简历 PDF</span><span class="btn__ic" aria-hidden="true">↗</span></a>
+          <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV (PDF)</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener"><span>简历 PDF</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="ja" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV（英語）</span><span class="btn__ic" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>
@@ -540,12 +556,12 @@ html.still .status__dot { animation-play-state: paused; }
 </main>
 
 <footer class="foot">
-  <div class="wrap mono"><span>© 2026 Beichen Li</span><span lang="en">Set in Geist and OPPO Sans</span><span lang="zh-Hans">字体：Geist、OPPO Sans</span><button class="gridlink" id="gridBtn" type="button" aria-pressed="false"><span lang="en" data-grid-off>Show grid</span><span lang="en" data-grid-on hidden>Hide grid</span><span lang="zh-Hans" data-grid-off>显示网格</span><span lang="zh-Hans" data-grid-on hidden>隐藏网格</span></button></div>
+  <div class="wrap mono"><span>© 2026 Beichen Li</span><span lang="en">Set in Geist and OPPO Sans</span><span lang="zh-Hans">字体：Geist、OPPO Sans</span><span lang="ja">書体：Geist、Murecho、OPPO Sans</span><button class="gridlink" id="gridBtn" type="button" aria-pressed="false"><span lang="en" data-grid-off>Show grid</span><span lang="en" data-grid-on hidden>Hide grid</span><span lang="zh-Hans" data-grid-off>显示网格</span><span lang="ja" data-grid-off>グリッドを表示</span><span lang="zh-Hans" data-grid-on hidden>隐藏网格</span><span lang="ja" data-grid-on hidden>グリッドを隠す</span></button></div>
 </footer>
 
 <div class="card" id="card" aria-hidden="true"><div class="card__in" id="cardIn"></div></div>
-<template id="tpl-glyph"><div class="card__fig"><span class="glyph-big">粉</span><span class="mask"></span></div><div class="card__cap mono">U+7C89 · <span lang="en">the 米 family, masked</span><span lang="zh-Hans">遮住「米」这类部件</span></div></template>
-<template id="pv-coloros"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>ColorOS-Font-Injector</b></div><div class="pv-bar"><i style="width:79%;background:var(--ikb)"></i><i style="width:19.2%;background:var(--ink)"></i><i style="width:1.8%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Java 79%</span><span style="--c:var(--ink)">Python 19.2%</span><span style="--c:#9AA0B4">Gradle 1.8%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-chs"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>cross-harness-sync</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-fx"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>fx-sentinel</b></div><div class="pv-bar"><i style="width:74.9%;background:var(--ikb)"></i><i style="width:22.6%;background:var(--ink)"></i><i style="width:2.5%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Dart 74.9%</span><span style="--c:var(--ink)">Python 22.6%</span><span style="--c:#9AA0B4">Kotlin 2.5%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-off"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>openfood-au</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-edibli"><div class="pv-shots"><img src="img/edibli-home.webp" width="120" height="254" alt=""><img src="img/edibli-result.webp" width="120" height="254" alt=""></div><div class="card__cap mono"><span lang="en">Edibli 3.1.0 on a Pixel 7: home and a product result</span><span lang="zh-Hans">Edibli 3.1.0 实机截图：首页与商品结果</span></div></template>
+<template id="tpl-glyph"><div class="card__fig"><span class="glyph-big">粉</span><span class="mask"></span></div><div class="card__cap mono">U+7C89 · <span lang="en">the 米 family, masked</span><span lang="zh-Hans">遮住「米」这类部件</span><span lang="ja">「米」のような部品を隠す</span></div></template>
+<template id="pv-coloros"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>ColorOS-Font-Injector</b></div><div class="pv-bar"><i style="width:79%;background:var(--ikb)"></i><i style="width:19.2%;background:var(--ink)"></i><i style="width:1.8%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Java 79%</span><span style="--c:var(--ink)">Python 19.2%</span><span style="--c:#9AA0B4">Gradle 1.8%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span><span lang="ja">GitHub で開く ↗</span></div></template><template id="pv-chs"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>cross-harness-sync</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span><span lang="ja">GitHub で開く ↗</span></div></template><template id="pv-fx"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>fx-sentinel</b></div><div class="pv-bar"><i style="width:74.9%;background:var(--ikb)"></i><i style="width:22.6%;background:var(--ink)"></i><i style="width:2.5%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Dart 74.9%</span><span style="--c:var(--ink)">Python 22.6%</span><span style="--c:#9AA0B4">Kotlin 2.5%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span><span lang="ja">GitHub で開く ↗</span></div></template><template id="pv-off"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>openfood-au</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span><span lang="ja">GitHub で開く ↗</span></div></template><template id="pv-edibli"><div class="pv-shots"><img src="img/edibli-home.webp" width="120" height="254" alt=""><img src="img/edibli-result.webp" width="120" height="254" alt=""></div><div class="card__cap mono"><span lang="en">Edibli 3.1.0 on a Pixel 7: home and a product result</span><span lang="zh-Hans">Edibli 3.1.0 实机截图：首页与商品结果</span><span lang="ja">Edibli 3.1.0 の実機画面：ホームと商品の結果</span></div></template>
 <template id="tpl-yb"><div class="card__fig"><div class="el"><span class="el__z">70</span><span class="el__sym">Yb</span><span class="el__name">Ytterbium</span><span class="el__w">173.045</span></div></div><div class="card__cap mono" style="text-transform:none">Yb_2 → Yb_3 · Materials Project, May 2023</div></template>
 
 <script src="js/lenis.min.js"></script>
@@ -560,13 +576,14 @@ html.still .status__dot { animation-play-state: paused; }
   /* ---------- language ---------- */
   function setLang(l) {
     root.dataset.lang = l;
-    root.lang = l === 'zh' ? 'zh-Hans' : 'en';
+    root.lang = l === 'zh' ? 'zh-Hans' : l === 'ja' ? 'ja' : 'en';
     document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
     try { localStorage.setItem('bl-lang', l); } catch (e) {}
   }
   let saved = null; try { saved = localStorage.getItem('bl-lang'); } catch (e) {}
-  const auto = (navigator.languages || [navigator.language || '']).some(l => /^zh/i.test(l)) ? 'zh' : 'en';
-  setLang(saved === 'zh' || saved === 'en' ? saved : auto);
+  const first = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+  const auto = first.startsWith('zh') ? 'zh' : first.startsWith('ja') ? 'ja' : (navigator.languages || []).some(l => /^zh/i.test(l)) ? 'zh' : 'en';
+  setLang(saved === 'zh' || saved === 'en' || saved === 'ja' ? saved : auto);
   document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => switchLang(b.dataset.setLang)));
 
   /* ---------- grid guides ---------- */
@@ -579,9 +596,10 @@ html.still .status__dot { animation-play-state: paused; }
   function setMotion(on) {
     motionOn = on;
     root.classList.toggle('still', !on);
-    const zh = root.dataset.lang === 'zh';
-    motionBtn.setAttribute('aria-label', on ? (zh ? '暂停动画' : 'Pause motion') : (zh ? '播放动画' : 'Play motion'));
-    motionBtn.dataset.tipEn = on ? 'Pause motion' : 'Play motion'; motionBtn.dataset.tipZh = on ? '暂停动画' : '播放动画';
+    const L = root.dataset.lang;
+    const tip = { en: on ? 'Pause motion' : 'Play motion', zh: on ? '暂停动画' : '播放动画', ja: on ? '動きを止める' : '動きを再生' };
+    motionBtn.setAttribute('aria-label', tip[L] || tip.en);
+    motionBtn.dataset.tipEn = tip.en; motionBtn.dataset.tipZh = tip.zh; motionBtn.dataset.tipJa = tip.ja;
     motionIcon.innerHTML = on ? '<path d="M5.5 3v10M10.5 3v10"/>' : '<path d="M5 3l8 5-8 5z"/>';
   }
   setMotion(motionOn);
@@ -617,9 +635,9 @@ html.still .status__dot { animation-play-state: paused; }
     };
     requestAnimationFrame(step);
   }
-  const nameEl = document.querySelector('[data-scramble]'), hanEl = document.querySelector('[data-scramble-han]');
+  const nameEl = document.querySelector('[data-scramble]'), hanEl = document.querySelector('[data-scramble-han]'), kanaEl = document.querySelector('.hero__name .kana');
   scramble(nameEl, { dur: 900, stagger: 55 }); setTimeout(() => scramble(hanEl, { dur: 900, pool: HAN, stagger: 120 }), 350);
-  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('span').forEach(s => { if (s.offsetParent) scramble(s, { dur: 650, stagger: 12, pool: root.dataset.lang === 'zh' ? HAN : LAT }); }); io.unobserve(e.target); } }), { threshold: .6 });
+  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('span').forEach(s => { if (s.offsetParent) scramble(s, { dur: 650, stagger: 12, pool: root.dataset.lang === 'en' ? LAT : HAN }); }); io.unobserve(e.target); } }), { threshold: .6 });
   document.querySelectorAll('[data-scramble-on-view]').forEach(h => { if (reduce || !h.classList.contains('sec__title')) io.observe(h); });
 
   /* ---------- language switch motion ----------
@@ -634,7 +652,8 @@ html.still .status__dot { animation-play-state: paused; }
     const go = () => { setLang(l); pillTarget(false); };
     if (reduce || !motionOn || !document.startViewTransition) { go(); return; }
     if (lxBusy) { lxBusy.vt.skipTransition(); lxBusy.clean(); lxBusy = null; }
-    const oldTag = root.dataset.lang === 'zh' ? 'zh-Hans' : 'en', newTag = l === 'zh' ? 'zh-Hans' : 'en';
+    const TAG = { en: 'en', zh: 'zh-Hans', ja: 'ja' };
+    const oldTag = TAG[root.dataset.lang] || 'en', newTag = TAG[l];
     const vh = innerHeight, named = [], rules = [];
     let k = 0;
     const isInline = (el) => getComputedStyle(el).display === 'inline';
@@ -652,7 +671,7 @@ html.still .status__dot { animation-play-state: paused; }
     document.body.querySelectorAll('[lang="' + oldTag + '"]').forEach(e => {
       const up = e.parentElement && e.parentElement.closest('[lang="' + oldTag + '"]');
       if (up && up !== root) return;
-      if (e.closest('.sr, .card, template') || !onScreen(e)) return;
+      if (e.closest('.sr, .card, template, .hero__name') || !onScreen(e)) return;
       const cls = 'lx' + (nav.contains(e) ? ' lxtop' : '');
       if (isInline(e)) {
         let box = e.parentElement; while (box && box !== document.body && isInline(box)) box = box.parentElement;
@@ -666,8 +685,9 @@ html.still .status__dot { animation-play-state: paused; }
         tag(twin ? [e, twin] : [e], cls, e.getBoundingClientRect().top);
       }
     });
-    if (onScreen(nameEl)) {
-      nameEl.style.viewTransitionName = 'lx-name-en'; hanEl.style.viewTransitionName = 'lx-name-zh'; named.push(nameEl, hanEl);
+    if (onScreen(hanEl)) {
+      /* the small name is "Beichen Li" in EN/中 and リ・ホクシン in 日: one name, so one morphs into the other */
+      nameEl.style.viewTransitionName = 'lx-name-sub'; kanaEl.style.viewTransitionName = 'lx-name-sub'; hanEl.style.viewTransitionName = 'lx-name-han'; named.push(nameEl, kanaEl, hanEl);
     }
     nav.style.viewTransitionName = 'lx-nav'; nav.style.viewTransitionClass = 'lxbar lxtop'; named.push(nav);
     const st = document.createElement('style'); st.textContent = rules.join(''); document.head.appendChild(st);
@@ -741,10 +761,10 @@ html.still .status__dot { animation-play-state: paused; }
   copyBtn.addEventListener('click', async () => {
     const addr = 'me@beichen.li';
     const labels = copyBtn.querySelectorAll('[data-copy-label]');
-    const set = (en, zh) => { labels[0].textContent = en; labels[1].textContent = zh; };
-    try { await navigator.clipboard.writeText(addr); set('Copied', '已复制'); }
-    catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mailAddr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); set('Selected, press Ctrl+C', '已选中，按 Ctrl+C 复制'); }
-    setTimeout(() => set('Copy address', '复制地址'), 2200);
+    const set = (en, zh, ja) => { labels[0].textContent = en; labels[1].textContent = zh; labels[2].textContent = ja; };
+    try { await navigator.clipboard.writeText(addr); set('Copied', '已复制', 'コピーしました'); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mailAddr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); set('Selected, press Ctrl+C', '已选中，按 Ctrl+C 复制', '選択しました。Ctrl+C でコピー'); }
+    setTimeout(() => set('Copy address', '复制地址', 'アドレスをコピー'), 2200);
   });
 
   /* ---------- hover cards + backdrop numbers ---------- */
@@ -1053,7 +1073,8 @@ html.still .status__dot { animation-play-state: paused; }
     hA.setAttribute('aria-hidden', String(showB)); hB.setAttribute('aria-hidden', String(!showB));
     hA.style.visibility = q > 0.41 ? 'hidden' : 'visible'; hB.style.visibility = q < 0.35 ? 'hidden' : 'visible';
     hBtns.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.hinge === '1') === showB)));
-    hAxis.textContent = showB ? (root.dataset.lang === 'zh' ? '原子排在晶格上 · 示意' : 'atoms on a lattice · schematic') : 'U+9571 · ' + dots.length + (root.dataset.lang === 'zh' ? ' 个点' : ' dots');
+    const L = root.dataset.lang;
+    hAxis.textContent = showB ? ({ zh: '原子排在晶格上 · 示意', ja: '格子上の原子 · 模式図' }[L] || 'atoms on a lattice · schematic') : 'U+9571 · ' + dots.length + ({ zh: ' 个点', ja: ' 点' }[L] || ' dots');
   }
 
   /* ---------- loop ---------- */
