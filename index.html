@@ -306,7 +306,13 @@ html[data-lang="zh"] .hinge__state h2 { letter-spacing: -0.02em; line-height: 1.
 .mail__addr:hover, .mail__addr:focus-visible { background-size: 100% 2px; }
 .btn { min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; text-decoration: none; transition: background-color .3s, color .3s; }
 .btn:hover { background: var(--ink); color: var(--paper); }
-.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(32px, 4.5vw, 64px); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.links .btn { min-height: 64px; padding: 0 18px; border: 0; border-left: 1px solid var(--line); justify-content: space-between; font-size: 1rem; }
+.links .btn:first-child { border-left: 0; padding-left: 4px; }
+.links .btn:hover, .links .btn:focus-visible { padding-left: 18px; }
+.links .btn { transition: background-color .3s, color .3s, padding .3s cubic-bezier(.2,.8,.2,1); }
+.btn__ic { flex: none; font-family: var(--f-mono); }
+@media (max-width: 900px) { .links { grid-template-columns: repeat(2, minmax(0, 1fr)); } .links .btn:nth-child(3) { border-left: 0; padding-left: 4px; } /* children 4 and 5 are the EN / 中 CV links; only one shows */ .links .btn:nth-child(n+3) { border-top: 1px solid var(--line); } }
 .foot { background: var(--ikb); color: var(--on-ikb); }
 .gridlink { all: unset; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--on-ikb); background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .35s cubic-bezier(.7,0,.2,1); }
 .gridlink:hover, .gridlink:focus-visible { background-size: 100% 1px; }
@@ -513,17 +519,17 @@ html.still .status__dot { animation-play-state: paused; }
 
   <section class="sec" id="contact" aria-labelledby="contact-h">
     <div class="wrap grid">
-      <div class="sec__meta mono"><span lang="en">Contact</span><span lang="zh-Hans">联系</span></div>
+      <div class="sec__meta mono"><span lang="en">Contact</span><span lang="zh-Hans">联系</span><span lang="en">Melbourne</span><span lang="zh-Hans">墨尔本</span></div>
       <div class="sec__body">
         <h2 class="sr" id="contact-h">Contact</h2>
         <div class="mail">
           <a class="mail__addr" id="mailAddr" href="mailto:me@beichen.li">me@beichen.li</a>
-          <button class="btn" type="button" id="copyBtn"><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span></button>
         </div>
         <div class="links">
-          <a class="btn" href="https://github.com/Beicxxxx" target="_blank" rel="noopener">GitHub ↗</a>
-          <a class="btn" href="https://www.linkedin.com/in/beichen-li-818755389" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener">CV (PDF) ↗</a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener">简历 PDF ↗</a>
+          <button class="btn" type="button" id="copyBtn"><span><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span></span><svg class="btn__ic" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z"/><path d="M10.5 5.5v-3h-8v8h3"/></svg></button>
+          <a class="btn" href="https://github.com/Beicxxxx" target="_blank" rel="noopener"><span>GitHub</span><span class="btn__ic" aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://www.linkedin.com/in/beichen-li-818755389" target="_blank" rel="noopener"><span>LinkedIn</span><span class="btn__ic" aria-hidden="true">↗</span></a>
+          <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV (PDF)</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener"><span>简历 PDF</span><span class="btn__ic" aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>
@@ -775,7 +781,7 @@ html.still .status__dot { animation-play-state: paused; }
   });
   /* ---------- magnetic controls ---------- */
   if (finePointer && !reduce) {
-    const mags = [...document.querySelectorAll('.nav .pill, .nav .iconbtn, .hinge__switch, .mail .btn, .links .btn')];
+    const mags = [...document.querySelectorAll('.nav .pill, .nav .iconbtn, .hinge__switch')];
     mags.forEach(el => el.classList.add('mag'));
     addEventListener('pointermove', (e) => {
       for (const el of mags) {
