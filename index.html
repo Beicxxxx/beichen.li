@@ -103,14 +103,17 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
    blurs out and the new one blurs in (after Motion Primitives' TransitionPanel and TextMorph); the two
    name spans in the hero trade places and sizes as one shared-element morph. */
 ::view-transition-group(*) { animation-duration: .62s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
-::view-transition-old(root) { animation: lx-fade .32s ease both; }
-::view-transition-new(root) { animation: lx-fade .32s ease reverse both; }
+/* root: the new page fades in over the old one with normal blending (no see-through dip mid-fade) */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) { animation: lx-fade-in .32s ease both; }
 ::view-transition-old(*.lx), ::view-transition-new(*.lx) { width: auto; height: auto; }
 ::view-transition-old(*.lx) { animation: lx-out .24s cubic-bezier(.4,0,1,1) both; }
 ::view-transition-new(*.lx) { animation: lx-in .5s cubic-bezier(.2,.8,.2,1) .1s both; }
-::view-transition-old(*.lxbar), ::view-transition-new(*.lxbar) { animation: none; }
+/* the nav bar itself does not crossfade: only its live new state shows, so the EN/中 ink is never doubled */
+::view-transition-old(*.lxbar) { display: none; }
+::view-transition-new(*.lxbar) { animation: none; mix-blend-mode: normal; }
 ::view-transition-group(*.lxtop) { z-index: 50; }
-@keyframes lx-fade { to { opacity: 0; } }
+@keyframes lx-fade-in { from { opacity: 0; } }
 @keyframes lx-out { to { opacity: 0; filter: blur(6px); transform: translateY(-4px); } }
 @keyframes lx-in { from { opacity: 0; filter: blur(8px); transform: translateY(6px); } }
 .iconbtn { min-height: 34px; min-width: 34px; border: 1px solid currentColor; background: transparent; cursor: pointer; display: inline-grid; place-items: center; }
@@ -867,7 +870,7 @@ html.still .status__dot { animation-play-state: paused; }
     const cols = Math.ceil(W / ts), rows = Math.ceil(H / ts);
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
       const fromBottom = (rows - 1 - r) / rows;
-      tiles.push({ x: c * ts, y: r * ts, s: ts, th: fromBottom * 0.82 + Math.random() * 0.18, rot: 0, dx: 0 });
+      tiles.push({ x: c * ts, y: r * ts, s: ts, th: fromBottom * 0.7 + Math.random() * 0.18, /* max .88, so every tile finishes (k = 1) once s reaches 1 */ rot: 0, dx: 0 });
     }
     ctx.fillStyle = 'rgb(0,47,167)'; ctx.fillRect(0, 0, W, H);
     built = true;
