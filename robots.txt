@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://beichen.li/sitemap.xml

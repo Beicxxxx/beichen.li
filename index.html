@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beichen Li 李北辰</title>
+<meta name="description" content="Beichen Li (李北辰): Master of AI at Monash University, trained in chemistry. Research on generative models for CJK type and on what interatomic potentials inherit from their training labels. Applying for PhD positions (2027 intake) and open to ML research and engineering roles.">
+<link rel="canonical" href="https://beichen.li/">
+<meta name="author" content="Beichen Li">
+<meta name="theme-color" content="#002FA7">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://beichen.li/">
+<meta property="og:site_name" content="beichen.li">
+<meta property="og:title" content="Beichen Li 李北辰">
+<meta property="og:description" content="Beichen Li (李北辰): Master of AI at Monash University, trained in chemistry. Research on generative models for CJK type and on what interatomic potentials inherit from their training labels. Applying for PhD positions (2027 intake) and open to ML research and engineering roles.">
+<meta property="og:image" content="https://beichen.li/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Beichen Li, set over a Klein-blue night sky">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/oppo-sans-subset.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Beichen Li","alternateName":"李北辰","url":"https://beichen.li/","email":"mailto:me@beichen.li","affiliation":{"@type":"CollegeOrUniversity","name":"Monash University"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Lanzhou University"},"sameAs":["https://github.com/Beicxxxx","https://www.linkedin.com/in/beichen-li-818755389"]}</script>
+<style>
+@font-face{font-family:"Geist";src:url(fonts/geist.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url(fonts/geist-mono.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+[hidden]{display:none!important}
+html,body{margin:0}
+
+/* LXGW WenKai, OFL 1.1: only the four characters of its own name, for the specimen on its project row */
+@font-face{font-family:"OPPO Sans";src:url(fonts/oppo-sans-subset.woff2) format("woff2");font-weight:100 700;font-style:normal;font-display:swap}
+@font-face { font-family: "LXGW WenKai"; font-weight: 400; font-display: swap; src: url(fonts/lxgw-wenkai-name.woff2) format("woff2"); }
+
+/* Layout: a night sky turning around Polaris opens the page; below it, a strict 12-column log on paper.
+   The one transformation is the 镱 section, where scattered dots gather into a glyph, then a lattice. */
+:root {
+  --ikb: #002FA7;          /* International Klein Blue: the sky */
+  --ikb-deep: #001C66;     /* shadow of the sky, hover depth */
+  --paper: #F5F6FA;        /* cool white, biased toward the blue */
+  --ink: #0A0D1A;          /* near-black, blue-biased */
+  --mute: #4C5268;         /* secondary text on paper (7:1) */
+  --line: rgba(10, 13, 26, 0.14);
+  --on-ikb: #FFFFFF;
+  --on-ikb-mute: rgba(255, 255, 255, 0.78);
+  --f-display: "Geist", "OPPO Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-mono: "Geist Mono", "OPPO Sans", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-han: "OPPO Sans", "PingFang SC", "Microsoft YaHei", sans-serif;   /* Chinese display */
+  --f-zh: "OPPO Sans", "PingFang SC", "Microsoft YaHei", sans-serif;  /* Chinese running text */
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --max: 1360px;
+  color-scheme: light;
+}
+html { background: var(--paper); }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-display); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+html:not([data-lang]) [lang="zh-Hans"], html[data-lang="en"] [lang="zh-Hans"], html[data-lang="zh"] [lang="en"] { display: none !important; }
+html[data-lang="zh"] body { font-family: var(--f-display), var(--f-zh); line-height: 1.8; }
+html[data-lang="zh"] .mono { letter-spacing: .02em; }
+html[data-lang="zh"] .mono [lang="zh-Hans"], html[data-lang="zh"] .mono[lang="zh-Hans"], html[data-lang="zh"] .status__item [lang="zh-Hans"] { font-family: var(--f-display), var(--f-zh); letter-spacing: .02em; }
+html[data-lang="zh"] .sec__title, html[data-lang="zh"] .study h3 { word-break: keep-all; overflow-wrap: anywhere; text-wrap: wrap; }
+html[data-lang="zh"] .sec__title, html[data-lang="zh"] .study h3, html[data-lang="zh"] .hinge__state h2 { font-weight: 700; }
+html[data-lang="zh"] .lead { line-height: 1.6; letter-spacing: 0; }
+body { text-autospace: normal; font-variant-numeric: tabular-nums; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ikb); outline-offset: 3px; }
+.sky :focus-visible, .foot :focus-visible { outline-color: var(--on-ikb); }
+.wrap { max-width: var(--max); margin-inline: auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); box-sizing: border-box; }
+@media (min-width: 900px) { .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
+.mono { font-family: var(--f-mono); font-size: 0.7812rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.han { font-family: var(--f-han); }
+.nb { white-space: nowrap; }
+button { font: inherit; color: inherit; }
+
+/* ---------- nav ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--ikb); }
+.nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 50; color: var(--on-ikb); transition: color .35s ease, background-color .35s ease; }
+.nav.on-paper { color: var(--ink); background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { font-family: var(--f-mono); font-size: 0.875rem; font-weight: 500; text-decoration: none; letter-spacing: 0.02em; }
+.brand b { font-weight: 500; opacity: .6; }
+.nav__links { display: flex; gap: 26px; align-items: center; }
+.nav__links a { text-decoration: none; font-size: 0.875rem; position: relative; padding-block: 6px; }
+.nav__links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .4s cubic-bezier(.7,0,.2,1); }
+.nav__links a:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav__tools { display: flex; gap: 8px; align-items: center; }
+.pill { display: inline-flex; border: 1px solid currentColor; overflow: hidden; }
+.pill button { min-height: 34px; min-width: 44px; padding: 0 12px; border: 0; background: transparent; cursor: pointer; font-size: 0.8125rem; }
+.pill button[aria-pressed="true"] { background: currentColor; }
+.pill button[aria-pressed="true"] span { color: var(--ikb); }
+.nav.on-paper .pill button[aria-pressed="true"] span { color: var(--paper); }
+.iconbtn { min-height: 34px; min-width: 34px; border: 1px solid currentColor; background: transparent; cursor: pointer; display: inline-grid; place-items: center; }
+.iconbtn[aria-pressed="true"] { background: currentColor; }
+.iconbtn { position: relative; }
+.iconbtn::after { content: attr(data-tip-en); position: absolute; top: calc(100% + 8px); left: 50%; transform: translate(-50%, -4px); padding: 4px 8px; background: var(--ink); color: var(--paper); font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: .02em; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
+html[data-lang="zh"] .iconbtn::after { content: attr(data-tip-zh); font-family: var(--f-display), var(--f-zh); }
+.iconbtn:hover::after, .iconbtn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: none) { .iconbtn::after { display: none; } }
+.iconbtn[aria-pressed="true"] svg { stroke: var(--ikb); }
+.nav.on-paper .iconbtn[aria-pressed="true"] svg { stroke: var(--paper); }
+@media (max-width: 760px) {
+  .nav .wrap { flex-wrap: wrap; row-gap: 4px; padding-block: 10px 6px; }
+  .nav__links { order: 3; flex: 1 0 100%; gap: 22px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter-l, 16px) * -1); padding-inline: var(--gutter-l, 16px); }
+  .nav__links::-webkit-scrollbar { display: none; }
+  .nav__links a { padding-block: 8px; white-space: nowrap; }
+}
+
+/* ---------- sky (pinned opening) ---------- */
+.sky { position: relative; height: 170vh; background: var(--ikb); color: var(--on-ikb); }
+.polaris { display: none !important; }
+.sky__stick { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; }
+.sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#seam { pointer-events: none; }
+.hero { position: absolute; left: 0; right: 0; bottom: 0; padding-bottom: max(40px, 6vh); will-change: transform, opacity; }
+.hero .wrap { display: grid; gap: 22px; }
+.hero__eyebrow { color: var(--on-ikb-mute); }
+.hero__name { margin: 0; font-weight: 600; font-size: clamp(4rem, 1.5rem + 10vw, 10rem); line-height: .86; letter-spacing: -0.055em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .18em; }
+.hero__name .han { font-weight: 500; font-size: .3em; letter-spacing: .04em; color: var(--on-ikb-mute); }
+html[data-lang="zh"] .hero__name .han { order: 1; font-size: .92em; font-weight: 700; letter-spacing: 0; color: var(--on-ikb); }
+html[data-lang="zh"] .hero__name [data-scramble] { order: 2; font-size: .3em; font-weight: 500; letter-spacing: -0.02em; color: var(--on-ikb-mute); }
+.hero::before { content: ""; position: absolute; inset: -32vh 0 0 0; z-index: -1; pointer-events: none; background: linear-gradient(to top, rgba(0,47,167,.88) 0%, rgba(0,47,167,.84) 14%, rgba(0,47,167,.72) 28%, rgba(0,47,167,.54) 42%, rgba(0,47,167,.34) 56%, rgba(0,47,167,.17) 70%, rgba(0,47,167,.06) 84%, rgba(0,47,167,0) 100%); }
+.hero__row { display: flex; flex-wrap: wrap; gap: 18px 48px; align-items: flex-end; justify-content: space-between; }
+.hero__lede { margin: 0; max-width: 40ch; font-size: clamp(1.0625rem, 0.9rem + 0.4vw, 1.3125rem); line-height: 1.5; color: var(--on-ikb); text-wrap: pretty; }
+.status { display: grid; gap: 6px; }
+.status__item { display: flex; gap: 10px; align-items: center; font-family: var(--f-mono); font-size: 0.8125rem; }
+.status__dot { width: 7px; height: 7px; background: var(--on-ikb); box-shadow: 0 0 0 0 rgba(255,255,255,.7); animation: pulse 2.4s infinite; flex: none; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6); } 70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+.polaris { position: absolute; transform: translate(18px, -8px); color: var(--on-ikb-mute); display: grid; gap: 2px; pointer-events: none; white-space: nowrap; }
+.polaris strong { color: var(--on-ikb); font-weight: 500; }
+@media (max-width: 760px) { .polaris .coords { display: none; } .polaris { transform: translate(calc(-100% - 16px), -8px); text-align: right; } }
+html[data-lang="zh"] .sec__title { letter-spacing: -0.02em; font-size: clamp(2.375rem, 1rem + 5vw, 5.9rem); line-height: 1.04; }
+.scrollhint { position: absolute; right: var(--gutter-r); top: calc(env(safe-area-inset-top, 0px) + 76px); display: flex; gap: 10px; align-items: center; color: var(--on-ikb-mute); }
+@media (min-width: 900px) { .scrollhint { right: max(40px, env(safe-area-inset-right, 0px)); } }
+@media (max-width: 760px) { .scrollhint { top: calc(env(safe-area-inset-top, 0px) + 112px); } }
+.scrollhint__bar { width: 64px; height: 1px; background: rgba(255,255,255,.3); position: relative; overflow: hidden; }
+.scrollhint__bar i { position: absolute; inset: 0; background: var(--on-ikb); transform-origin: left; transform: scaleX(0); }
+
+/* ---------- log (paper) ---------- */
+.log { position: relative; z-index: 1; background: var(--paper); margin-top: -50vh; }
+.sec { padding-block: clamp(72px, 11vw, 150px); border-top: 1px solid var(--line); }
+.sec:first-child { border-top: 0; }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 28px; }
+.sec__meta { grid-column: 1 / span 3; display: grid; gap: 10px; align-content: start; color: var(--mute); }
+.sec__body { grid-column: 4 / span 9; min-width: 0; }
+@media (max-width: 900px) { .sec__meta, .sec__body { grid-column: 1 / -1; } }
+.sec__title { margin: 0 0 clamp(28px, 4vw, 56px); font-size: clamp(2.75rem, 1rem + 6vw, 6.875rem); line-height: .92; letter-spacing: -0.05em; font-weight: 600; text-wrap: balance; }
+.lead { margin: 0; font-size: clamp(1.375rem, 1rem + 1.2vw, 2.125rem); line-height: 1.32; letter-spacing: -0.015em; font-weight: 400; max-width: 30ch; text-wrap: pretty; }
+html[data-lang="zh"] .lead { max-width: 24em; }
+.ints { list-style: none; padding: 0; margin: clamp(40px, 5vw, 72px) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.ints li { padding: 20px 24px 22px 0; border-bottom: 1px solid var(--line); display: grid; gap: 6px; }
+.ints strong { font-weight: 600; font-size: 1.1875rem; letter-spacing: -0.01em; }
+.ints span { color: var(--mute); font-size: 0.9688rem; }
+
+/* inline terms + hover cards */
+.term { all: unset; cursor: help; color: var(--ikb); background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 92%; transition: background-size .35s cubic-bezier(.7,0,.2,1); }
+.term:hover, .term:focus-visible { background-size: 100% 42%; color: var(--ink); background-image: linear-gradient(rgba(0,47,167,.16), rgba(0,47,167,.16)); }
+.term:focus-visible { outline: 2px solid var(--ikb); outline-offset: 2px; }
+.card { position: fixed; z-index: 70; left: 0; top: 0; pointer-events: none; opacity: 0; transform: translate3d(0,0,0) scale(.96); transition: opacity .2s ease, transform .25s cubic-bezier(.2,.7,.2,1); }
+.card.on { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+.card__in { width: 220px; background: var(--paper); border: 1px solid var(--ink); box-shadow: 8px 8px 0 var(--ikb); }
+.card__fig { height: 180px; display: grid; place-items: center; position: relative; border-bottom: 1px solid var(--ink); overflow: hidden; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 18px 18px; }
+.card__cap { padding: 10px 12px; color: var(--mute); font-size: 0.7188rem; }
+.card.wide .card__in { width: 288px; }
+.pv-shots { display: flex; gap: 12px; justify-content: center; padding: 16px; background: var(--ikb); border-bottom: 1px solid var(--ink); }
+.pv-shots img { display: block; width: 120px; height: auto; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
+.pv-repo { display: grid; gap: 10px; padding: 16px 14px 14px; border-bottom: 1px solid var(--ink); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 12px 12px; background-color: var(--paper); }
+.pv-path { font-family: var(--f-mono); font-size: 0.75rem; color: var(--mute); overflow-wrap: anywhere; }
+.pv-path b { display: block; margin-top: 2px; font-family: var(--f-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.pv-bar { display: flex; height: 6px; background: var(--line); }
+.pv-bar i { display: block; height: 100%; }
+.pv-langs { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: var(--f-mono); font-size: 0.6875rem; color: var(--mute); }
+.pv-langs span::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; background: var(--c); vertical-align: 0; }
+.pv-langs .pv-lic::before { display: none; }
+.pv-langs .pv-lic { margin-left: auto; color: var(--ink); }
+/* section titles rise line by line */
+.rw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .16em; margin-bottom: -.16em; }
+.rwi { display: inline-block; transform: translate3d(0, 110%, 0); transition: transform 1s cubic-bezier(.16,.84,.2,1); }
+.rise-in .rwi { transform: none; }
+html.still .rwi { transition: none; }
+/* magnetic controls */
+.mag { transition: transform .4s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+.glyph-big { font-family: var(--f-han); font-weight: 500; font-size: 8.75rem; line-height: 1; color: var(--ink); }
+.mask { position: absolute; left: 34px; top: 26px; width: 70px; height: 128px; border: 2px dashed var(--ikb); background: rgba(0,47,167,.07); }
+.el { width: 140px; min-height: 140px; background: var(--ikb); color: var(--on-ikb); display: grid; grid-template-rows: auto 1fr auto auto; padding: 12px 14px; box-sizing: border-box; }
+.el__z { font-family: var(--f-mono); font-size: 0.875rem; }
+.el__sym { font-size: 3.625rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; align-self: center; }
+.el__name { font-size: 0.8125rem; }
+.el__w { font-family: var(--f-mono); font-size: 0.7188rem; color: var(--on-ikb-mute); }
+.article { position: relative; isolation: isolate; }
+.backdrop { position: absolute; z-index: -1; right: -2%; top: 50%; font-weight: 700; font-size: clamp(160px, 26vw, 420px); line-height: .8; letter-spacing: -0.07em; color: var(--ikb); opacity: 0; transform: translate3d(0, -40%, 0) scale(.92); transition: opacity .45s ease, transform .7s cubic-bezier(.2,.7,.2,1); pointer-events: none; font-variant-numeric: tabular-nums; }
+.article.show-backdrop .backdrop { opacity: .09; transform: translate3d(0, -50%, 0) scale(1); }
+
+/* hinge: one character, two questions */
+.hinge { position: relative; height: 200vh; background: var(--paper); border-top: 1px solid var(--line); }
+.hinge__stick { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 620px; overflow: hidden; }
+.hinge__stick > .wrap { height: 100%; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; }
+.hinge__copy { grid-column: 1 / span 5; display: grid; min-width: 0; padding-top: 56px; }
+.hinge__stage { grid-column: 6 / span 7; position: relative; height: 78%; min-height: 380px; }
+.hinge__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hinge__state { grid-area: 1 / 1; display: grid; gap: 18px; align-content: center; }
+.hinge__state h2 { margin: 0; font-size: clamp(2.375rem, 1rem + 3.2vw, 4.5rem); line-height: .95; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance; }
+html[data-lang="zh"] .hinge__state h2 { letter-spacing: -0.02em; line-height: 1.08; font-size: clamp(1.875rem, 1rem + 2.6vw, 3.625rem); word-break: keep-all; }
+.ptile b, .spec { text-transform: none; }
+.hinge__state p { margin: 0; max-width: 42ch; font-size: 1.0938rem; color: var(--ink); text-wrap: pretty; }
+.hinge__state .mono { color: var(--mute); }
+.hinge__han { font-family: var(--f-han); font-weight: 700; color: var(--ikb); }
+.hinge__switch { display: inline-flex; gap: 0; border: 1px solid var(--ink); overflow: hidden; justify-self: start; margin-top: 6px; }
+.hinge__switch button { min-height: 40px; padding: 0 16px; border: 0; background: transparent; cursor: pointer; font-family: var(--f-mono); font-size: 0.7812rem; letter-spacing: .04em; text-transform: uppercase; }
+.hinge__switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.radbox { position: absolute; border: 2px dashed var(--ikb); background: rgba(0,47,167,.05); pointer-events: none; opacity: 0; }
+#hingeB { opacity: 0; visibility: hidden; }
+.radbox > span { position: absolute; left: -2px; top: calc(100% + 8px); white-space: nowrap; color: var(--ikb); background: var(--paper); padding-right: 6px; }
+.hinge__axis { position: absolute; right: 0; bottom: 0; color: var(--mute); }
+.hinge__tile { display: inline-grid; grid-template-columns: auto auto; gap: 4px 18px; align-items: end; justify-self: start; padding: 12px 16px; background: var(--ikb); color: var(--on-ikb); }
+.hinge__tile b { font-size: 2.75rem; line-height: 1; font-weight: 600; letter-spacing: -0.04em; grid-row: span 2; }
+.hinge__tile .mono { color: var(--on-ikb-mute); text-transform: none; }
+@media (max-width: 900px) {
+  .hinge__stick > .wrap { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); align-items: stretch; row-gap: 8px; }
+  .hinge__copy { grid-column: 1; padding-top: 72px; }
+  .hinge__stage { grid-column: 1; height: auto; min-height: 0; }
+  .hinge__state p { font-size: 0.9688rem; }
+  .hinge__state h2 { font-size: 2.125rem; }
+  .hinge__axis { display: none; }
+}
+
+/* two visual languages for the two studies */
+.spec { position: relative; width: 132px; height: 132px; margin-top: 10px; border: 1px solid var(--ink); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 13.2px 13.2px; display: grid; place-items: center; }
+.spec__g { font-family: var(--f-han); font-weight: 500; font-size: 6.125rem; line-height: 1; color: var(--ink); transform: translateY(-4px); }
+.spec__base { position: absolute; left: 0; right: 0; top: 86%; border-top: 1px solid var(--ikb); }
+.spec__l { position: absolute; font-size: 0.625rem; color: var(--ikb); letter-spacing: .04em; }
+.ptile { width: 132px; min-height: 132px; margin-top: 10px; background: var(--ikb); color: var(--on-ikb); display: grid; grid-template-rows: auto 1fr auto auto; padding: 10px 12px; box-sizing: border-box; }
+.ptile b { font-size: 3.25rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; align-self: center; }
+.ptile .mono { font-size: 0.6562rem; color: var(--on-ikb-mute); text-transform: none; }
+@media (max-width: 900px) { .spec, .ptile { display: none; } }
+
+/* research */
+.study { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 14px; padding-block: 36px 44px; border-top: 1px solid var(--ink); }
+.study:last-of-type { border-bottom: 1px solid var(--line); }
+.study__meta { grid-column: 1 / span 3; display: grid; gap: 6px; align-content: start; color: var(--mute); }
+.study__main { grid-column: 4 / span 9; min-width: 0; display: grid; gap: 14px; }
+@media (max-width: 900px) { .study__meta, .study__main { grid-column: 1 / -1; } }
+.study h3 { margin: 0; font-size: clamp(1.625rem, 1rem + 1.6vw, 2.5rem); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+.study p { margin: 0; max-width: 64ch; font-size: 1.0938rem; color: var(--ink); text-wrap: pretty; }
+.study__note { font-size: .75rem; line-height: 1.5; text-transform: none; letter-spacing: 0; max-width: 26ch; }
+.study p.study__stack { font-size: .8125rem; line-height: 1.6; color: var(--mute); text-transform: none; letter-spacing: 0; }
+.tag { display: inline-flex; align-self: start; justify-self: start; padding: 3px 8px; border: 1px solid currentColor; }
+.thesis { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 6px 24px; color: var(--mute); font-size: 0.9688rem; }
+
+/* projects: terminal rows */
+.rows { border-top: 1px solid var(--ink); }
+.row { position: relative; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) minmax(0, 2.4fr) 76px 24px; gap: 20px; align-items: baseline; padding: 20px 4px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); isolation: isolate; overflow: hidden; }
+.row::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ikb); transform: scaleY(0); transform-origin: bottom; transition: transform .45s cubic-bezier(.7,0,.2,1); }
+.row--static::before { display: none; }
+.row--static:hover, .row--static:hover .row__dim { color: inherit !important; }
+.row:hover::before, .row:focus-visible::before { transform: scaleY(1); transform-origin: top; }
+.row:hover, .row:focus-visible { color: var(--on-ikb); }
+.row:hover .row__dim, .row:focus-visible .row__dim { color: var(--on-ikb-mute); }
+.row__name { font-weight: 600; font-size: clamp(1.1875rem, 1rem + 0.5vw, 1.5rem); letter-spacing: -0.02em; }
+.row__what { font-size: 0.9688rem; }
+.row__dim { color: var(--mute); transition: color .3s; }
+.row__go { justify-self: end; transition: transform .45s cubic-bezier(.7,0,.2,1); }
+@media (max-width: 900px) { a.row .row__name::after { content: " \2197"; font-weight: 400; color: var(--mute); } }
+.row:hover .row__go { transform: translate(3px, -3px); }
+@media (max-width: 900px) { .row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; } .row__what { grid-column: 1 / -1; grid-row: 2; } .row__stack { display: none; } .row__go { display: none; } }
+
+.row__spec { position: absolute; right: 150px; top: 50%; transform: translate3d(0, -40%, 0); font-family: "LXGW WenKai", serif; font-size: 2.25rem; line-height: 1; color: var(--on-ikb); opacity: 0; pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+.row--spec:hover .row__spec, .row--spec:focus-visible .row__spec { opacity: 1; transform: translate3d(0, -50%, 0); }
+.row--spec:hover .row__stack, .row--spec:focus-visible .row__stack { opacity: 0; }
+@media (max-width: 900px) { .row__spec { display: none !important; } }
+/* experience + education */
+.entries { display: grid; gap: 0; border-top: 1px solid var(--ink); }
+.entry { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 8px; padding-block: 24px 26px; border-bottom: 1px solid var(--line); }
+.entry__when { grid-column: 1 / span 3; color: var(--mute); }
+.entry__main { grid-column: 4 / span 9; min-width: 0; display: grid; gap: 6px; }
+@media (max-width: 900px) { .entry__when, .entry__main { grid-column: 1 / -1; } }
+.entry h3 { margin: 0; font-size: 1.375rem; letter-spacing: -0.02em; font-weight: 600; }
+.entry p { margin: 0; color: var(--mute); max-width: 64ch; }
+
+/* contact */
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.mail__addr { color: inherit; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .45s cubic-bezier(.7,0,.2,1); font-size: clamp(2.5rem, 1rem + 6.5vw, 6.25rem); line-height: .95; letter-spacing: -0.055em; font-weight: 600; user-select: all; overflow-wrap: anywhere; }
+.mail__addr:hover, .mail__addr:focus-visible { background-size: 100% 2px; }
+.btn { min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; text-decoration: none; transition: background-color .3s, color .3s; }
+.btn:hover { background: var(--ink); color: var(--paper); }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.foot { background: var(--ikb); color: var(--on-ikb); }
+.gridlink { all: unset; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--on-ikb); background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .35s cubic-bezier(.7,0,.2,1); }
+.gridlink:hover, .gridlink:focus-visible { background-size: 100% 1px; }
+.gridlink:focus-visible { outline: 2px solid var(--on-ikb); outline-offset: 3px; }
+.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 22px calc(22px + env(safe-area-inset-bottom, 0px)); color: var(--on-ikb-mute); }
+
+/* 12-column guides (toggle) */
+.guides { position: fixed; inset: 0; z-index: 40; pointer-events: none; display: none; }
+.guides.on { display: block; }
+.guides .wrap { height: 100%; }
+.guides .grid { height: 100%; }
+.guides .grid span { background: rgba(0, 47, 167, .07); border-inline: 1px solid rgba(0, 47, 167, .22); }
+@media (max-width: 900px) { .guides .grid span:nth-child(n+5) { display: none; } .guides .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+html.still .status__dot { animation-play-state: paused; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .status__dot { animation: none; } .row::before, .term, .card, .backdrop { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="guides" id="guides" aria-hidden="true"><div class="wrap"><div class="grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">beichen<b>.</b>li</a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#about"><span lang="en">About</span><span lang="zh-Hans">简介</span></a>
+      <a href="#research"><span lang="en">Research</span><span lang="zh-Hans">研究</span></a>
+      <a href="#projects"><span lang="en">Projects</span><span lang="zh-Hans">项目</span></a>
+      <a href="#experience"><span lang="en">Experience</span><span lang="zh-Hans">经历</span></a>
+      <a href="#contact"><span lang="en">Contact</span><span lang="zh-Hans">联系</span></a>
+    </nav>
+    <div class="nav__tools">
+      <button class="iconbtn" id="motionBtn" type="button" aria-label="Pause motion" data-tip-en="Pause motion" data-tip-zh="暂停动画">
+        <svg id="motionIcon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 3v10M10.5 3v10"/></svg>
+      </button>
+      <div class="pill" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true"><span>EN</span></button>
+        <button type="button" data-set-lang="zh" aria-pressed="false"><span class="han">中</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sky" id="top" aria-label="Beichen Li">
+  <div class="sky__stick" id="stick">
+    <canvas id="skyCanvas" aria-hidden="true"></canvas>
+    <canvas id="seam" aria-hidden="true"></canvas>
+
+    <div class="polaris mono" id="polarisLabel" aria-hidden="true">
+      <strong><span style="text-transform:none">α UMi</span> · Polaris</strong>
+      <span class="coords" style="text-transform:none">RA 02h 31m 49s · Dec +89° 15′ 51″</span>
+    </div>
+
+    <div class="scrollhint mono" id="hint" aria-hidden="true">
+      <span id="hintTxt">000</span>
+      <span class="scrollhint__bar"><i id="hintBar"></i></span>
+      <span lang="en">Scroll</span><span lang="zh-Hans">向下</span>
+    </div>
+
+    <div class="hero" id="hero">
+      <div class="wrap">
+        <p class="hero__eyebrow mono" style="margin:0"><span lang="en">Master of AI, Monash University · graduating Dec 2026</span><span lang="zh-Hans">莫纳什大学人工智能硕士在读 · 2026 年 12 月毕业</span></p>
+        <h1 class="hero__name"><span class="sr">Beichen Li 李北辰</span><span data-scramble aria-hidden="true">Beichen Li</span><span class="han" data-scramble-han aria-hidden="true">李北辰</span></h1>
+        <div class="hero__row">
+          <p class="hero__lede"><span lang="en">I trained as a chemist and now work in machine learning, on generative models for CJK type and on what interatomic potentials learn from their training labels.</span><span lang="zh-Hans">我本科学化学，现在做机器学习，研究中日韩字体的生成模型，以及原子间势从训练标签中学到了什么。</span></p>
+          <div class="status">
+            <span class="status__item"><i class="status__dot" aria-hidden="true"></i><span lang="en">Applying for PhD positions · 2027 intake</span><span lang="zh-Hans">正在申请 2027 年入学的博士项目</span></span>
+            <span class="status__item"><i class="status__dot" aria-hidden="true" style="animation-delay:1.2s"></i><span lang="en">Open to ML research &amp; engineering roles</span><span lang="zh-Hans">同时寻找机器学习研究与工程岗位</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<main class="log">
+
+  <section class="sec" id="about" aria-labelledby="about-h">
+    <div class="wrap grid">
+      <div class="sec__meta mono"><span lang="en">About</span><span lang="zh-Hans">简介</span><span lang="en">Melbourne · AEDT</span><span lang="zh-Hans">墨尔本 · 澳东夏令时</span></div>
+      <div class="sec__body">
+        <h2 class="sec__title" id="about-h" data-scramble-on-view><span lang="en">Chemistry, then machine learning.</span><span lang="zh-Hans">先学化学，后做机器学习。</span></h2>
+        <p class="lead"><span lang="en">I studied applied chemistry at Lanzhou University and am finishing a Master of Artificial Intelligence at Monash. In my research I fix the design and freeze the benchmark before I look at any results, and keep every run reproducible.</span><span lang="zh-Hans">我本科在兰州大学读应用化学，现在在莫纳什大学读人工智能硕士，2026 年 12 月毕业。做研究时，我在看结果之前定好实验设计、冻结基准测试，并保证每一次实验都能复现。</span></p>
+        <ul class="ints">
+          <li><strong lang="en">Generative models for typography</strong><strong lang="zh-Hans">字体生成模型</strong><span lang="en">CJK glyph generation and vector fonts</span><span lang="zh-Hans">中日韩字形生成、矢量字体生成</span></li>
+          <li><strong lang="en">AI for Science</strong><strong lang="zh-Hans">AI for Science</strong><span lang="en">Machine-learned interatomic potentials and their labels</span><span lang="zh-Hans">机器学习原子间势及其训练标签</span></li>
+          <li><strong lang="en">Rigorous evaluation of ML</strong><strong lang="zh-Hans">机器学习的严谨评估</strong><span lang="en">Controlled experiments, pre-registration, measurement validity</span><span lang="zh-Hans">对照实验、预注册研究、测量效度</span></li>
+          <li><strong lang="en">Reliable AI systems</strong><strong lang="zh-Hans">可靠的 AI 系统</strong><span lang="en">LLMs behind rules, guardrails and fallbacks</span><span lang="zh-Hans">在规则、防护和兜底机制之下运行的大语言模型</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="hinge" id="hinge" aria-labelledby="hinge-h">
+    <div class="hinge__stick">
+      <div class="wrap">
+        <div class="hinge__copy">
+          <div class="hinge__state" id="hingeA">
+            <span class="mono">U+9571 · <span class="hinge__han" style="font-size: 0.9375rem">镱</span> · <span lang="en">one character, two questions</span><span lang="zh-Hans">一个字，两个问题</span></span>
+            <h2 id="hinge-h"><span lang="en">Read it as type.</span><span lang="zh-Hans">把它当作字来读。</span></h2>
+            <p lang="en">Its left half, <span class="hinge__han">钅</span>, is the simplified form of the metal radical. Japanese fonts write that radical as 金, so a Japanese font has never drawn 钅. Extending a font to characters built from parts it has never drawn is the problem behind my font study. In the study I create the gap on purpose: I remove one component family from a font's training glyphs and measure what that costs.</p>
+            <p lang="zh-Hans">左半边的 <span class="hinge__han">钅</span> 是简体的金字旁。日文字体把这个偏旁写作“金”，所以一款日文字体从没画过 钅。把字体扩展到由它没画过的部件组成的字，就是我的字体研究要解决的问题。实验里，我有意制造这种缺口：从字体的训练字形中删去一类部件，再测量这样做的代价。</p>          </div>
+          <div class="hinge__state" id="hingeB" aria-hidden="true">
+            <span class="mono"><span lang="en">Element 70 · ytterbium</span><span lang="zh-Hans">第 70 号元素 · 镱</span></span>
+            <h2><span lang="en">Read it as matter.</span><span lang="zh-Hans">把它当作物质来读。</span></h2>
+            <p lang="en">The whole character means ytterbium, element 70. In 2023 the Materials Project changed the pseudopotential it uses for ytterbium. My AI for Science study asks whether foundation interatomic potentials inherit the pseudopotential convention of their training labels, where in the network it is carried, and whether a targeted edit can switch it.</p>
+            <p lang="zh-Hans">整个字指的是镱，第 70 号元素。2023 年，Materials Project 更换了镱所用的赝势。我的 AI for Science 研究要回答：通用机器学习势会不会继承训练标签的赝势约定，约定由网络的哪一部分承载，以及能否用一次有针对性的编辑切换它。</p>
+            <div class="hinge__tile"><b>Yb</b><span class="mono">70</span><span class="mono">Yb_2 → Yb_3</span></div>
+          </div>
+          <div class="hinge__switch" role="group" aria-label="View the character as">
+            <button type="button" data-hinge="0" aria-pressed="true"><span lang="en">Type</span><span lang="zh-Hans">字形</span></button>
+            <button type="button" data-hinge="1" aria-pressed="false"><span lang="en">Matter</span><span lang="zh-Hans">物质</span></button>
+          </div>
+        </div>
+        <div class="hinge__stage" id="hingeStage">
+          <canvas id="hingeCanvas" role="img" aria-label="The character 镱 drawn in dots, which regroup into atoms on a lattice"></canvas>
+          <div class="radbox" id="radbox" aria-hidden="true"><span class="mono"><span class="hinge__han" style="font-size: 0.8125rem">钅</span> · <span lang="en">absent from Japanese fonts</span><span lang="zh-Hans">日文字体里没有</span></span></div>
+          <span class="hinge__axis mono" id="hingeAxis" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="research" aria-labelledby="research-h">
+    <div class="wrap grid">
+      <div class="sec__meta mono"><span lang="en">Research</span><span lang="zh-Hans">研究</span><span lang="en">Papers in preparation</span><span lang="zh-Hans">论文均在撰写中</span></div>
+      <div class="sec__body">
+        <h2 class="sec__title" id="research-h" data-scramble-on-view><span lang="en">Two studies, planned in advance.</span><span lang="zh-Hans">两项研究，方案先于结果。</span></h2>
+
+        <article class="study article" id="study-font">
+          <span class="backdrop" aria-hidden="true">6×4</span>
+          <div class="study__meta mono">
+            <span lang="en">Independent study</span><span lang="zh-Hans">独立研究</span>
+            <span lang="en">Aug 2026 – now</span><span lang="zh-Hans">2026.08 – 至今</span>
+            <span class="tag" lang="en">Paper in preparation · replication under way</span><span class="tag" lang="zh-Hans">论文撰写中 · 复现进行中</span>
+            <div class="spec" aria-hidden="true"><span class="spec__g">粉</span><span class="spec__base"></span><span class="spec__l mono" style="left:4px;top:3px">U+7C89</span><span class="spec__l mono" style="right:4px;top:calc(86% + 2px)">BASELINE 0</span></div>
+          </div>
+          <div class="study__main">
+            <h3><span lang="en">Component support gaps in CJK font generation</span><span lang="zh-Hans">中日韩字体生成中的<wbr>未见部件问题</span></h3>
+            <p lang="en">When a CJK font is extended beyond the few thousand characters it ships with, some new characters contain a <button type="button" class="term" data-card="glyph">component</button> the font never drew. I measure what that costs. Each target font is fine-tuned twice: once with every training glyph that contains a given component family removed, and once with the family kept. I then compare the generator's error on the same held-out characters. The design covers <button type="button" class="term" data-backdrop="study-font">6 fonts × 4 component families</button> (小, 日, 竹, 米), each with 3 random seeds. It is crossed with a generator pretrained on 330 other fonts, with or without that family in the pool. A placebo control instead removes random unrelated characters from the pretraining pool. A replication on a second, architecturally different generator is under way.</p>
+            <p lang="zh-Hans">把一款中日韩字体扩展到原有的几千字之外时，有些新字会包含字体从未画过的<span class="nb"><button type="button" class="term" data-card="glyph">部件</button>。</span>我测量这件事的代价。每款目标字体微调两次：一次删去训练字形中含某类部件的全部字，一次保留，然后在同一批留出字上比较生成器的误差。实验覆盖<button type="button" class="term" data-backdrop="study-font">6 款字体 × 4 类部件</button>（小、日、竹、米），每格 3 个随机种子；另与预训练条件交叉：生成器先在 330 款其他字体上预训练，预训练池含或不含这类部件。另设随机删除对照（即安慰剂对照）：从预训练池里随机删去与该部件无关的字。在另一种架构的生成器上的复现正在进行。</p>
+            <p class="study__stack mono" lang="en">PyTorch · diffusers. From-scratch GAN (pix2pix) and flow-matching generators, trained on NVIDIA L4, L40S and A100 across Colab, AWS and Nectar Research Cloud.</p>
+            <p class="study__stack mono" lang="zh-Hans">PyTorch · diffusers。从零实现的 GAN（pix2pix）与流匹配生成器，在 Colab、AWS 和 Nectar 研究云的 NVIDIA L4、L40S、A100 上训练。</p>
+          </div>
+        </article>
+
+        <article class="study article" id="study-yb">
+          <span class="backdrop" aria-hidden="true">70</span>
+          <div class="study__meta mono">
+            <span>AI for Science</span>
+            <span lang="en">Nov 2026 – now</span><span lang="zh-Hans">2026.11 – 至今</span>
+            <span lang="en">Analysis plan frozen Nov 2026</span><span lang="zh-Hans">分析计划已于 2026 年 11 月冻结</span>
+            <span class="tag" lang="en"><span><span style="text-transform:none">arXiv</span> preprint planned Dec 2026</span></span><span class="tag" lang="zh-Hans"><span>计划 2026 年 12 月发布 <span style="text-transform:none">arXiv</span> 预印本</span></span>
+            <span class="study__note" lang="en">Code and data released with the submission (MIT / CC BY 4.0)</span><span class="study__note" lang="zh-Hans">代码与数据随投稿公开（MIT / CC BY 4.0）</span>
+            <div class="ptile" aria-hidden="true"><span class="mono">70</span><b>Yb</b><span class="mono">Ytterbium</span><span class="mono">173.045</span></div>
+          </div>
+          <div class="study__main">
+            <h3><span lang="en">Pseudopotential conventions in foundation interatomic potentials</span><span lang="zh-Hans">通用机器学习势<wbr>如何继承赝势约定</span></h3>
+            <p lang="en">Foundation interatomic potentials are trained on DFT labels, and the choices behind those labels are not fixed. In 2023 the Materials Project changed the pseudopotential it uses for <button type="button" class="term" data-card="yb">ytterbium</button> from Yb_2 to Yb_3. Models of the same architecture (MACE, eqV2, Nequix) have been released twice: once trained on MPtrj, built before the change, and once on OMat24, which uses Yb_3. This gives a natural experiment. I ask whether the models inherit the convention of their labels, where in the network it is carried, and whether retraining only a small, ytterbium-specific set of weights can move a model from one convention to the other without changing its other elements.</p>
+            <p lang="zh-Hans">通用机器学习原子间势（基础模型）用 DFT 计算的标签训练，而这些标签背后的计算设置并非一成不变。2023 年，Materials Project 把<button type="button" class="term" data-card="yb">镱</button>的赝势从 Yb_2 换成了 Yb_3。同一种架构（MACE、eqV2、Nequix）的模型都有两个公开版本：一个用更换之前构建的 MPtrj 训练，一个用采用 Yb_3 的 OMat24 训练。这构成了一个自然实验。我研究这些模型是否继承了训练标签的约定，约定由网络的哪一部分承载，以及只重训一小组镱专属的权重，能否把模型从一种约定移到另一种，而不改变其他元素的结果。</p>
+            <p class="study__stack mono" lang="en">PyTorch · mace-torch · fairchem · Nequix. A fault-tolerant job queue runs training and relaxation jobs across cloud GPUs (A10, A16, T4) and a laptop RTX 4060, with cross-GPU reproducibility checks.</p>
+            <p class="study__stack mono" lang="zh-Hans">PyTorch · mace-torch · fairchem · Nequix。自写的容错任务队列在云端 GPU（A10、A16、T4）和笔记本 RTX 4060 之间调度训练与弛豫任务，并做跨 GPU 的可复现性检查。</p>
+          </div>
+        </article>
+
+        <p class="thesis"><span class="mono" lang="en">BSc thesis · Lanzhou University · 2023</span><span class="mono" lang="zh-Hans">本科论文 · 兰州大学 · 2023</span><span lang="en">Synthesis and fluorescence of a neodymium 2-azido-4,4′-biphenyldicarboxylate complex. I did all the experimental work.</span><span lang="zh-Hans">2-叠氮基-4,4′-联苯二甲酸钕配合物的合成与荧光性质研究，全部实验工作独立完成。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="projects" aria-labelledby="projects-h">
+    <div class="wrap grid">
+      <div class="sec__meta mono"><span lang="en">Projects &amp; open source</span><span lang="zh-Hans">项目与开源</span><span lang="en">6 selected</span><span lang="zh-Hans">精选 6 项</span></div>
+      <div class="sec__body">
+        <h2 class="sec__title" id="projects-h" data-scramble-on-view><span lang="en">Selected projects.</span><span lang="zh-Hans">精选项目。</span></h2>
+        <div class="rows">
+          <a class="row row--spec" href="https://fonts.google.com/specimen/LXGW+WenKai+TC" target="_blank" rel="noopener"><span class="row__name" data-scramble-hover>LXGW WenKai</span><span class="row__spec" lang="zh" aria-hidden="true">霞鹜文楷</span><span class="row__what"><span lang="en">500+ AI-generated glyphs across the family; the TC edition is on Google Fonts</span><span lang="zh-Hans">为整个霞鹜文楷系列补全 500 多个 AI 生成的字形，繁体版已收录于 Google Fonts</span></span><span class="row__stack row__dim mono">CNN · glyphs</span><span class="row__dim mono">2023–24</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/ColorOS-Font-Injector" target="_blank" rel="noopener" data-preview="coloros"><span class="row__name" data-scramble-hover>ColorOS Font Injector</span><span class="row__what"><span lang="en">System fonts on locked, non-rooted phones, swapped inside a 30 ms window</span><span lang="zh-Hans">在未 Root 的手机上替换系统字体，在约 30 毫秒的窗口内完成</span></span><span class="row__stack row__dim mono">Java · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <div class="row row--static" data-preview="edibli"><span class="row__name">Edibli</span><span class="row__what"><span lang="en">Food-label scanner: rules decide every allergen verdict, a LoRA-tuned LLM only explains</span><span lang="zh-Hans">食品标签扫描应用：过敏原判断全部由规则做出，微调后的大模型只负责解释</span></span><span class="row__stack row__dim mono">Node · Android</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true"></span></div>
+          <a class="row" href="https://github.com/Beicxxxx/cross-harness-sync" target="_blank" rel="noopener" data-preview="chs"><span class="row__name" data-scramble-hover>cross-harness-sync</span><span class="row__what"><span lang="en">Lets several AI coding agents hand off one research project across machines, with state kept in Git</span><span lang="zh-Hans">让多个 AI 编程智能体跨机器接力同一个研究项目，状态保存在 Git 中</span></span><span class="row__stack row__dim mono">Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/fx-sentinel" target="_blank" rel="noopener" data-preview="fx"><span class="row__name" data-scramble-hover>fx-sentinel</span><span class="row__what"><span lang="en">Exchange-rate monitor: an Android app and a Telegram bot with threshold alerts and 7- or 30-day scenarios</span><span lang="zh-Hans">汇率监控：安卓应用和 Telegram 机器人，支持阈值提醒和 7 天或 30 天情景预测</span></span><span class="row__stack row__dim mono">Flutter · Python</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+          <a class="row" href="https://github.com/Beicxxxx/openfood-au" target="_blank" rel="noopener" data-preview="off"><span class="row__name" data-scramble-hover>openfood-au</span><span class="row__what"><span lang="en">Open Food Facts pipeline for Australian products</span><span lang="zh-Hans">澳洲商品的 Open Food Facts 开放数据管线</span></span><span class="row__stack row__dim mono">Python · SQLite</span><span class="row__dim mono">2026</span><span class="row__go" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="experience" aria-labelledby="exp-h">
+    <div class="wrap grid">
+      <div class="sec__meta mono"><span lang="en">Experience &amp; education</span><span lang="zh-Hans">经历与教育</span></div>
+      <div class="sec__body">
+        <h2 class="sec__title" id="exp-h" data-scramble-on-view><span lang="en">Work and education.</span><span lang="zh-Hans">工作与教育。</span></h2>
+        <div class="entries">
+          <div class="entry"><span class="entry__when mono"><span lang="en">2025 – Dec 2026</span><span lang="zh-Hans">2025 – 2026.12</span></span><div class="entry__main"><h3><span lang="en">Master of Artificial Intelligence, Monash University</span><span lang="zh-Hans">人工智能硕士，莫纳什大学</span></h3><p lang="en">Deep Learning · Fundamentals of AI · IT Research &amp; Innovation Methods · Industry Experience Studio</p><p lang="zh-Hans">深度学习 · 人工智能基础 · IT 研究与创新方法 · 行业实践项目</p></div></div>
+          <div class="entry"><span class="entry__when mono"><span lang="en">Apr – Nov 2025</span><span lang="zh-Hans">2025.04 – 2025.11</span></span><div class="entry__main"><h3><span lang="en">IT &amp; AI Solutions Assistant, New Asian Supermarket</span><span lang="zh-Hans">IT 与 AI 解决方案助理，New Asian Supermarket</span></h3><p lang="en">Deployed an image-recognition model that replaced manual product entry; built dynamic pricing and supplier matching; ran the databases, tools, website and network.</p><p lang="zh-Hans">部署了取代人工录入的商品图像识别模型；开发动态定价与供应商匹配系统；维护数据库、内部工具、公司网站和网络。</p></div></div>
+          <div class="entry"><span class="entry__when mono">2019 – 2023</span><div class="entry__main"><h3><span lang="en">BSc in Applied Chemistry, Lanzhou University</span><span lang="zh-Hans">应用化学学士，兰州大学</span></h3><p lang="en">Thesis on a neodymium complex, a lanthanide metal–organic framework.</p><p lang="zh-Hans">毕业论文研究一种钕配合物（镧系金属–有机框架）。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="contact-h">
+    <div class="wrap grid">
+      <div class="sec__meta mono"><span lang="en">Contact</span><span lang="zh-Hans">联系</span><span lang="en">Melbourne</span><span lang="zh-Hans">墨尔本</span></div>
+      <div class="sec__body">
+        <h2 class="sr" id="contact-h">Contact</h2>
+        <div class="mail">
+          <a class="mail__addr" id="mailAddr" href="mailto:me@beichen.li">me@beichen.li</a>
+          <button class="btn" type="button" id="copyBtn"><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span></button>
+        </div>
+        <div class="links">
+          <a class="btn" href="https://github.com/Beicxxxx" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn" href="https://www.linkedin.com/in/beichen-li-818755389" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener">CV (PDF) ↗</a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener">简历 PDF ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap mono"><span>© 2026 Beichen Li</span><span lang="en">Set in Geist and OPPO Sans</span><span lang="zh-Hans">字体：Geist、OPPO Sans</span><button class="gridlink" id="gridBtn" type="button" aria-pressed="false"><span lang="en" data-grid-off>Show grid</span><span lang="en" data-grid-on hidden>Hide grid</span><span lang="zh-Hans" data-grid-off>显示网格</span><span lang="zh-Hans" data-grid-on hidden>隐藏网格</span></button></div>
+</footer>
+
+<div class="card" id="card" aria-hidden="true"><div class="card__in" id="cardIn"></div></div>
+<template id="tpl-glyph"><div class="card__fig"><span class="glyph-big">粉</span><span class="mask"></span></div><div class="card__cap mono">U+7C89 · <span lang="en">the 米 family, masked</span><span lang="zh-Hans">遮住「米」这类部件</span></div></template>
+<template id="pv-coloros"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>ColorOS-Font-Injector</b></div><div class="pv-bar"><i style="width:79%;background:var(--ikb)"></i><i style="width:19.2%;background:var(--ink)"></i><i style="width:1.8%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Java 79%</span><span style="--c:var(--ink)">Python 19.2%</span><span style="--c:#9AA0B4">Gradle 1.8%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-chs"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>cross-harness-sync</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-fx"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>fx-sentinel</b></div><div class="pv-bar"><i style="width:74.9%;background:var(--ikb)"></i><i style="width:22.6%;background:var(--ink)"></i><i style="width:2.5%;background:#9AA0B4"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Dart 74.9%</span><span style="--c:var(--ink)">Python 22.6%</span><span style="--c:#9AA0B4">Kotlin 2.5%</span><span class="pv-lic">MIT</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-off"><div class="pv-repo"><div class="pv-path"><span>github.com/Beicxxxx/</span><b>openfood-au</b></div><div class="pv-bar"><i style="width:100%;background:var(--ikb)"></i></div><div class="pv-langs"><span style="--c:var(--ikb)">Python 100%</span></div></div><div class="card__cap mono"><span lang="en">Opens on GitHub ↗</span><span lang="zh-Hans">在 GitHub 上打开 ↗</span></div></template><template id="pv-edibli"><div class="pv-shots"><img src="img/edibli-home.webp" width="120" height="254" alt=""><img src="img/edibli-result.webp" width="120" height="254" alt=""></div><div class="card__cap mono"><span lang="en">Edibli 3.1.0 on a Pixel 7: home and a product result</span><span lang="zh-Hans">Edibli 3.1.0 实机截图：首页与商品结果</span></div></template>
+<template id="tpl-yb"><div class="card__fig"><div class="el"><span class="el__z">70</span><span class="el__sym">Yb</span><span class="el__name">Ytterbium</span><span class="el__w">173.045</span></div></div><div class="card__cap mono" style="text-transform:none">Yb_2 → Yb_3 · Materials Project, May 2023</div></template>
+
+<script src="js/lenis.min.js"></script>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+  const easeInOut = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  /* ---------- language ---------- */
+  function setLang(l) {
+    root.dataset.lang = l;
+    root.lang = l === 'zh' ? 'zh-Hans' : 'en';
+    document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
+    try { localStorage.setItem('bl-lang', l); } catch (e) {}
+  }
+  let saved = null; try { saved = localStorage.getItem('bl-lang'); } catch (e) {}
+  const auto = (navigator.languages || [navigator.language || '']).some(l => /^zh/i.test(l)) ? 'zh' : 'en';
+  setLang(saved === 'zh' || saved === 'en' ? saved : auto);
+  document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.setLang)));
+
+  /* ---------- grid guides ---------- */
+  const gridBtn = document.getElementById('gridBtn'), guides = document.getElementById('guides');
+  gridBtn.addEventListener('click', () => { const on = !guides.classList.contains('on'); guides.classList.toggle('on', on); gridBtn.setAttribute('aria-pressed', String(on)); gridBtn.querySelectorAll('[data-grid-on]').forEach(x => x.hidden = !on); gridBtn.querySelectorAll('[data-grid-off]').forEach(x => x.hidden = on); });
+
+  /* ---------- motion on/off (WCAG 2.2.2: moving content gets a visible pause control) ---------- */
+  let motionOn = !reduce;
+  const motionBtn = document.getElementById('motionBtn'), motionIcon = document.getElementById('motionIcon');
+  function setMotion(on) {
+    motionOn = on;
+    root.classList.toggle('still', !on);
+    const zh = root.dataset.lang === 'zh';
+    motionBtn.setAttribute('aria-label', on ? (zh ? '暂停动画' : 'Pause motion') : (zh ? '播放动画' : 'Play motion'));
+    motionBtn.dataset.tipEn = on ? 'Pause motion' : 'Play motion'; motionBtn.dataset.tipZh = on ? '暂停动画' : '播放动画';
+    motionIcon.innerHTML = on ? '<path d="M5.5 3v10M10.5 3v10"/>' : '<path d="M5 3l8 5-8 5z"/>';
+  }
+  setMotion(motionOn);
+  motionBtn.addEventListener('click', () => setMotion(!motionOn));
+  document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => setMotion(motionOn)));
+
+  /* ---------- smooth scroll ---------- */
+  let lenis = null;
+  if (!reduce && window.Lenis) { lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true }); }
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href'); const el = id === '#top' ? document.body : document.querySelector(id);
+    if (!el) return; e.preventDefault();
+    const off = document.getElementById('nav').offsetHeight + 8; if (lenis) lenis.scrollTo(id === '#top' ? 0 : el, { offset: -off, duration: 1.4 }); else window.scrollTo({ top: id === '#top' ? 0 : el.getBoundingClientRect().top + scrollY - off });
+  }));
+
+  /* ---------- scramble ---------- */
+  const LAT = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#%&*+=/<>';
+  const HAN = '星辰北南天地日月光影字形部件笔画永東西';
+  function scramble(el, { dur = 700, pool = LAT, stagger = 22 } = {}) {
+    if (reduce || el._busy) return;
+    const target = el.textContent; const n = target.length; el._busy = true;
+    const start = performance.now();
+    const step = (now) => {
+      let out = '', done = 0;
+      for (let i = 0; i < n; i++) {
+        const t0 = i * stagger, t = now - start - t0;
+        if (target[i] === ' ' || t >= dur * .55) { out += target[i]; done++; }
+        else if (t < 0) out += target[i] === ' ' ? ' ' : pool[(Math.random() * pool.length) | 0];
+        else out += pool[(Math.random() * pool.length) | 0];
+      }
+      el.textContent = out;
+      if (done < n) requestAnimationFrame(step); else { el.textContent = target; el._busy = false; }
+    };
+    requestAnimationFrame(step);
+  }
+  const nameEl = document.querySelector('[data-scramble]'), hanEl = document.querySelector('[data-scramble-han]');
+  scramble(nameEl, { dur: 900, stagger: 55 }); setTimeout(() => scramble(hanEl, { dur: 900, pool: HAN, stagger: 120 }), 350);
+  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('span').forEach(s => { if (s.offsetParent) scramble(s, { dur: 650, stagger: 12, pool: root.dataset.lang === 'zh' ? HAN : LAT }); }); io.unobserve(e.target); } }), { threshold: .6 });
+  document.querySelectorAll('[data-scramble-on-view]').forEach(h => { if (reduce || !h.classList.contains('sec__title')) io.observe(h); });
+  if (!reduce) {
+    const riseIO = new IntersectionObserver((es) => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const h = e.target, ws = [...h.querySelectorAll('.rw')].filter(w => w.offsetParent);
+      let line = -1, top = null, k = 0;
+      ws.forEach(w => { if (top === null || Math.abs(w.offsetTop - top) > 4) { line++; top = w.offsetTop; k = 0; } w.firstChild.style.transitionDelay = (line * 110 + k++ * 26) + 'ms'; });
+      h.classList.add('rise-in'); riseIO.unobserve(h);
+    }), { threshold: 0.2 });
+    document.querySelectorAll('.sec__title').forEach(h => {
+      h.querySelectorAll(':scope > span[lang]').forEach(sp => {
+        const zh = sp.lang === 'zh-Hans';
+        const parts = zh ? sp.innerHTML.split(/<wbr>|(?<=[，、。；：！？])/) : sp.textContent.trim().split(/\s+/);
+        sp.innerHTML = parts.filter(Boolean).map(t => '<span class="rw"><span class="rwi">' + t + '</span></span>').join(zh ? '' : ' ');
+      });
+      riseIO.observe(h);
+    });
+  }
+  document.querySelectorAll('.row:not(.row--static)').forEach(r => r.addEventListener('pointerenter', () => scramble(r.querySelector('[data-scramble-hover]'), { dur: 420, stagger: 14 })));
+
+  /* ---------- copy ---------- */
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.addEventListener('click', async () => {
+    const addr = 'me@beichen.li';
+    const labels = copyBtn.querySelectorAll('[data-copy-label]');
+    const set = (en, zh) => { labels[0].textContent = en; labels[1].textContent = zh; };
+    try { await navigator.clipboard.writeText(addr); set('Copied', '已复制'); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mailAddr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); set('Selected, press Ctrl+C', '已选中，按 Ctrl+C 复制'); }
+    setTimeout(() => set('Copy address', '复制地址'), 2200);
+  });
+
+  /* ---------- hover cards + backdrop numbers ---------- */
+  const card = document.getElementById('card'), cardIn = document.getElementById('cardIn');
+  let cardOn = false, mx = 0, my = 0, cx = 0, cy = 0;
+  function placeCard(x, y) { mx = x; my = y; }
+  const hiders = [];
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hiders.forEach(h => h()); });
+  document.querySelectorAll('.term').forEach(t => {
+    const kind = t.dataset.card, bd = t.dataset.backdrop;
+    const show = (x, y) => {
+      if (kind) { cardIn.innerHTML = document.getElementById('tpl-' + kind).innerHTML; card.classList.add('on'); cardOn = true; placeCard(x, y); if (!cx) { cx = mx; cy = my; } }
+      if (bd) document.getElementById(bd).classList.add('show-backdrop');
+    };
+    const hide = () => { card.classList.remove('on'); cardOn = false; if (bd) document.getElementById(bd).classList.remove('show-backdrop'); };
+    hiders.push(hide);
+    t.addEventListener('pointerenter', (e) => show(e.clientX, e.clientY));
+    t.addEventListener('pointermove', (e) => placeCard(e.clientX, e.clientY));
+    t.addEventListener('pointerleave', hide);
+    t.addEventListener('focus', () => { const r = t.getBoundingClientRect(); show(r.right, r.bottom); });
+    t.addEventListener('blur', hide);
+    t.addEventListener('click', () => { if (card.classList.contains('on')) hide(); else { const r = t.getBoundingClientRect(); show(r.right, r.bottom); } });
+  });
+
+  /* ---------- project previews (pointer devices) ---------- */
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (finePointer) document.querySelectorAll('.row[data-preview]').forEach(r => {
+    const tpl = document.getElementById('pv-' + r.dataset.preview); if (!tpl) return;
+    const show = (x, y) => { cardIn.innerHTML = tpl.innerHTML; card.classList.add('on', 'wide'); cardOn = true; placeCard(x, y); if (!cx) { cx = mx; cy = my; } };
+    const hide = () => { card.classList.remove('on', 'wide'); cardOn = false; };
+    hiders.push(hide);
+    r.addEventListener('pointerenter', (e) => show(e.clientX, e.clientY));
+    r.addEventListener('pointermove', (e) => placeCard(e.clientX, e.clientY));
+    r.addEventListener('pointerleave', hide);
+    r.addEventListener('focus', () => { const b = r.getBoundingClientRect(); show(b.right - 320, b.bottom); });
+    r.addEventListener('blur', hide);
+  });
+  /* ---------- magnetic controls ---------- */
+  if (finePointer && !reduce) {
+    const mags = [...document.querySelectorAll('.nav .pill, .nav .iconbtn, .hinge__switch, .mail .btn, .links .btn')];
+    mags.forEach(el => el.classList.add('mag'));
+    addEventListener('pointermove', (e) => {
+      for (const el of mags) {
+        const b = el.getBoundingClientRect(), dx = e.clientX - (b.left + b.width / 2), dy = e.clientY - (b.top + b.height / 2);
+        const R = Math.max(b.width, b.height) / 2 + 44, d = Math.hypot(dx, dy);
+        if (motionOn && d < R) { const k = (1 - d / R) * 0.32; el.style.transform = 'translate3d(' + (dx * k).toFixed(1) + 'px,' + (dy * k).toFixed(1) + 'px,0)'; el.dataset.mag = '1'; }
+        else if (el.dataset.mag) { el.style.transform = ''; delete el.dataset.mag; }
+      }
+    }, { passive: true });
+  }
+
+  /* ---------- sky ---------- */
+  const sky = document.getElementById('top');
+  const cv = document.getElementById('skyCanvas'), ctx = cv.getContext('2d');
+  const sc = document.getElementById('seam'), sctx = sc.getContext('2d');
+  const heroEl = document.getElementById('hero');
+  const polarisLabel = document.getElementById('polarisLabel');
+  const hintTxt = document.getElementById('hintTxt'), hintBar = document.getElementById('hintBar'), hintEl = document.getElementById('hint');
+  const nav = document.getElementById('nav');
+  const IKB = [0, 47, 167];
+  let W = 0, H = 0, DPR = 1, cell = 9, stars = [], pol = { x: 0, y: 0 }, atlas = {}, tiles = [];
+  const STAR_CHARS = ['·', '·', '·', '·', '.', '+', '+', '*', '×'];
+  const RAMP = ['·', ':', '+', '*', '#', '@'];
+
+  function makeAtlas() {
+    atlas = {};
+    const size = Math.round(cell * 1.5 * DPR);
+    [...new Set([...STAR_CHARS, ...RAMP])].forEach(ch => {
+      const c = document.createElement('canvas'); c.width = c.height = size * 2;
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.font = (ch === '星' ? '500 ' : '500 ') + size + 'px ' + (ch === '星' ? '"OPPO Sans", sans-serif' : '"Geist Mono", ui-monospace, monospace');
+      g.fillText(ch, size, size);
+      atlas[ch] = c;
+    });
+  }
+
+  function buildTargets() {
+    const oc = document.createElement('canvas'); oc.width = W; oc.height = H;
+    const g = oc.getContext('2d');
+    const fs = Math.min(W * 0.84 / 2, H * 0.5);
+    g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = '700 ' + Math.round(fs) + 'px "OPPO Sans", sans-serif';
+    g.fillText('北辰', W / 2, H * (W < 700 ? 0.42 : 0.44));
+    const data = g.getImageData(0, 0, W, H).data;
+    const out = [];
+    for (let y = 0; y < H; y += cell) for (let x = 0; x < W; x += cell) {
+      let sum = 0, cnt = 0;
+      for (let yy = y; yy < Math.min(y + cell, H); yy += 2) for (let xx = x; xx < Math.min(x + cell, W); xx += 2) { sum += data[(yy * W + xx) * 4 + 3]; cnt++; }
+      const cov = sum / (cnt * 255);
+      if (cov > 0.16) out.push({ x: x + cell / 2, y: y + cell / 2, ch: RAMP[Math.min(RAMP.length - 1, Math.floor((cov - 0.16) / 0.84 * RAMP.length))] });
+    }
+    for (let i = out.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [out[i], out[j]] = [out[j], out[i]]; }
+    return out;
+  }
+
+  function build() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    if (!W || !H) { built = false; return; }
+    for (const c of [cv, sc]) { c.width = Math.round(W * DPR); c.height = Math.round(H * DPR); }
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); sctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cell = W < 700 ? 7 : 9;
+    pol = { x: W * (W < 700 ? 0.66 : 0.72), y: H * (W < 700 ? 0.2 : 0.24) };
+    polarisLabel.style.left = pol.x + 'px'; polarisLabel.style.top = pol.y + 'px';
+    makeAtlas();
+    const targets = [];
+    const extra = W < 700 ? 420 : 1100;
+    const R = Math.hypot(W, H);
+    stars = [];
+    for (let i = 0; i < targets.length + extra; i++) {
+      const t = targets[i] || null;
+      const r = 14 + Math.pow(Math.random(), .9) * R * 0.72;
+      stars.push({
+        r, a: Math.random() * Math.PI * 2,
+        ch: STAR_CHARS[(Math.random() * STAR_CHARS.length) | 0],
+        s: 0.35 + Math.pow(Math.random(), 3) * 0.9,
+        al: 0.25 + Math.random() * 0.75,
+        tw: Math.random() * Math.PI * 2,
+        t, d: Math.random(),
+      });
+    }
+    const ts = W < 700 ? 18 : 24; tiles = [];
+    const cols = Math.ceil(W / ts), rows = Math.ceil(H / ts);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const fromBottom = (rows - 1 - r) / rows;
+      tiles.push({ x: c * ts, y: r * ts, s: ts, th: fromBottom * 0.82 + Math.random() * 0.18, rot: 0, dx: 0 });
+    }
+    ctx.fillStyle = 'rgb(0,47,167)'; ctx.fillRect(0, 0, W, H);
+    built = true;
+    try { buildHinge(); } catch (e) { console.warn('hinge build', e); }
+  }
+
+  function progress() {
+    const r = sky.getBoundingClientRect();
+    const total = sky.offsetHeight - window.innerHeight;
+    return total > 0 ? clamp(-r.top / total, 0, 1) : 0;
+  }
+
+  let last = performance.now();
+  const omega = 0.06;
+  let animT = 0, lastFrame = performance.now();
+  function drawSky(now) {
+    if (sky.getBoundingClientRect().bottom < 0) { last = now; nav.classList.add('on-paper'); return; }
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const p = progress();
+    const trailFade = reduce ? 1 : 0.1;
+    ctx.fillStyle = 'rgba(0,47,167,' + trailFade + ')'; ctx.fillRect(0, 0, W, H);
+    const half = cell * 0.75;
+    for (const st of stars) {
+      if (motionOn) st.a += omega * dt;
+      const ox = pol.x + Math.cos(st.a) * st.r, oy = pol.y + Math.sin(st.a) * st.r;
+      let x = ox, y = oy, ch = st.ch, al = st.al * (0.75 + 0.25 * Math.sin(animT * 0.002 + st.tw)), sz = st.s;
+      if (st.t) {
+        const m = reduce ? (p > 0.3 ? 1 : 0) : easeInOut(clamp((p - 0.05 - st.d * 0.12) / 0.26, 0, 1));
+        // spiral in: the star keeps turning around its target while it falls into place
+        const sw = (1 - m) * (1 - m) * 2.2, dxo = ox - st.t.x, dyo = oy - st.t.y;
+        const rx = dxo * Math.cos(sw) - dyo * Math.sin(sw), ry = dxo * Math.sin(sw) + dyo * Math.cos(sw);
+        x = st.t.x + rx * (1 - m); y = st.t.y + ry * (1 - m);
+        if (m > 0.55) { ch = st.t.ch; al = 0.95; sz = 1; }
+        else { al = al * (1 - m) + 0.95 * m; sz = sz * (1 - m) + m; }
+      } else {
+        al *= 1;
+      }
+      if (x < -20 || y < -20 || x > W + 20 || y > H + 20) continue;
+      const img = atlas[ch]; if (!img) continue;
+      const w = cell * 3 * sz;
+      ctx.globalAlpha = al; ctx.drawImage(img, x - w / 2, y - w / 2, w, w);
+    }
+    ctx.globalAlpha = 1;
+    // Polaris
+    const g = ctx.createRadialGradient(pol.x, pol.y, 0, pol.x, pol.y, 28);
+    g.addColorStop(0, 'rgba(255,255,255,.9)'); g.addColorStop(.25, 'rgba(255,255,255,.25)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(pol.x, pol.y, 28, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.95)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pol.x - 9, pol.y); ctx.lineTo(pol.x + 9, pol.y); ctx.moveTo(pol.x, pol.y - 9); ctx.lineTo(pol.x, pol.y + 9); ctx.stroke();
+
+    // seam: the sky breaks into tiles and falls away into paper
+    const s = smooth(0.2, 0.75, p);
+    sctx.clearRect(0, 0, W, H);
+    if (s > 0) {
+      sctx.fillStyle = '#F5F6FA';
+      for (const t of tiles) { const k = (s - t.th) / 0.12; if (k > 0) sctx.fillRect(t.x, t.y, t.s + 0.5, t.s + 0.5); }
+      sctx.fillStyle = '#002FA7';
+      for (const t of tiles) {
+        const k = (s - t.th) / 0.12;
+        if (k > 0 && k < 1) {
+          sctx.save(); sctx.globalAlpha = 1 - k;
+          sctx.translate(t.x + t.s / 2, t.y + t.s / 2);
+          const z = t.s; sctx.fillRect(-z / 2, -z / 2, z, z); sctx.restore();
+        }
+      }
+    }
+
+    // copy layers
+    const heroOut = smooth(0.12, 0.4, p);
+    heroEl.style.opacity = String(1 - heroOut);
+    heroEl.style.transform = 'translate3d(0,' + (-heroOut * 60) + 'px,0)';
+    heroEl.style.visibility = heroOut > 0.99 ? 'hidden' : 'visible';
+    polarisLabel.style.opacity = String(1 - smooth(0.1, 0.3, p));
+    hintEl.style.opacity = String(1 - smooth(0.25, 0.45, p));
+    hintTxt.textContent = String(Math.round(p * 100)).padStart(3, '0');
+    hintBar.style.transform = 'scaleX(' + p + ')';
+    nav.classList.toggle('on-paper', sky.getBoundingClientRect().bottom < 64 || s > 0.9);
+  }
+
+  /* ---------- hinge: 镱 as type, then as matter ---------- */
+  const hinge = document.getElementById('hinge');
+  const hStage = document.getElementById('hingeStage');
+  const hc = document.getElementById('hingeCanvas'), hctx = hc.getContext('2d');
+  const radbox = document.getElementById('radbox'), hAxis = document.getElementById('hingeAxis');
+  const hA = document.getElementById('hingeA'), hB = document.getElementById('hingeB');
+  const hBtns = document.querySelectorAll('[data-hinge]');
+  let HW = 0, HH = 0, dots = [], atoms = [], bonds = [], latScale = 1;
+
+  function buildHinge() {
+    HW = hStage.clientWidth; HH = hStage.clientHeight;
+    if (!HW || !HH) return;
+    hc.width = Math.round(HW * DPR); hc.height = Math.round(HH * DPR); hctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // glyph points
+    const oc = document.createElement('canvas'); oc.width = HW; oc.height = HH;
+    const g = oc.getContext('2d');
+    const fs = Math.min(HW * 0.86, HH * 0.86);
+    g.fillStyle = '#000'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = '700 ' + Math.round(fs) + 'px "OPPO Sans", sans-serif';
+    g.fillText('镱', HW / 2, HH / 2);
+    const d = g.getImageData(0, 0, HW, HH).data;
+    let minX = HW, maxX = 0, minY = HH, maxY = 0;
+    const step = HW < 500 ? 4 : 5, pts = [];
+    for (let y = 0; y < HH; y += step) for (let x = 0; x < HW; x += step) {
+      if (d[(y * HW + x) * 4 + 3] > 140) { pts.push([x, y]); if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+    }
+    // the radical 钅 ends at the emptiest ink column between 22% and 46% of the glyph's width
+    let radR = minX + (maxX - minX) * 0.33, best = Infinity;
+    for (let x = Math.round(minX + (maxX - minX) * 0.22); x <= minX + (maxX - minX) * 0.46; x++) {
+      let ink = 0; for (let y = minY; y <= maxY; y++) if (d[(y * HW + x) * 4 + 3] > 140) ink++;
+      if (ink < best) { best = ink; radR = x; }
+    }
+    radbox.style.left = (minX - 8) + 'px'; radbox.style.top = (minY - 8) + 'px';
+    radbox.style.width = (radR - minX + 16) + 'px'; radbox.style.height = (maxY - minY + 16) + 'px';
+    // lattice: a cubic cell repeated 3 x 3 x 3, drawn schematically
+    atoms = []; const n = 3;
+    const basis = [[0, 0, 0], [.5, .5, 0], [.5, 0, .5], [0, .5, .5]];
+    for (let i = 0; i <= n; i++) for (let j = 0; j <= n; j++) for (let k = 0; k <= n; k++) for (const b of basis) {
+      const p = [i + b[0], j + b[1], k + b[2]];
+      if (p[0] <= n && p[1] <= n && p[2] <= n) atoms.push(p.map(v => v - n / 2));
+    }
+    bonds = [];
+    for (let a = 0; a < atoms.length; a++) for (let b = a + 1; b < atoms.length; b++) {
+      const dx = atoms[a][0] - atoms[b][0], dy = atoms[a][1] - atoms[b][1], dz = atoms[a][2] - atoms[b][2];
+      if (Math.abs(dx * dx + dy * dy + dz * dz - 0.5) < 1e-6) bonds.push([a, b]);
+    }
+    latScale = Math.min(HW, HH) * 0.19;
+    dots = pts.map(([x, y], i) => ({ ex: Math.random() * HW * 1.4 - HW * 0.2, ey: Math.random() * HH * 1.8 - HH * 0.6, gx: x, gy: y, rad: x <= radR, atom: i % atoms.length, jx: (Math.random() - .5) * 7, jy: (Math.random() - .5) * 7, d: Math.random(), sx: (Math.random() - .5) * 2, sy: (Math.random() - .5) * 2 }));
+  }
+
+  function hingeProgress() {
+    const r = hinge.getBoundingClientRect();
+    const total = hinge.offsetHeight - innerHeight;
+    return total > 0 ? clamp(-r.top / total, 0, 1) : 0;
+  }
+  hBtns.forEach(b => b.addEventListener('click', () => {
+    const top = hinge.getBoundingClientRect().top + window.scrollY;
+    const target = top + (hinge.offsetHeight - innerHeight) * (b.dataset.hinge === '1' ? 0.86 : 0.08);
+    if (lenis) lenis.scrollTo(target, { duration: 1.6 }); else window.scrollTo({ top: target });
+  }));
+
+  function drawHinge(now) {
+    const r = hinge.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight || !dots.length) return;
+    const q = hingeProgress();
+    const pre = clamp(1 - r.top / innerHeight, 0, 1), E = reduce ? 1 : smooth(0.8, 1, pre);
+    hctx.clearRect(0, 0, HW, HH);
+    const ang = animT * 0.00025 + q * 1.2, tilt = 0.5;
+    const ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), st = Math.sin(tilt);
+    const proj = atoms.map(([x, y, z]) => {
+      const x1 = x * ca + z * sa, z1 = -x * sa + z * ca;
+      const y1 = y * ct - z1 * st, z2 = y * st + z1 * ct;
+      return [HW / 2 + x1 * latScale, HH / 2 + y1 * latScale, z2];
+    });
+    const lat = smooth(0.42, 0.6, q);
+    if (lat > 0) {
+      hctx.strokeStyle = 'rgba(10,13,26,' + (0.16 * lat) + ')'; hctx.lineWidth = 1;
+      hctx.beginPath();
+      for (const [a, b] of bonds) { hctx.moveTo(proj[a][0], proj[a][1]); hctx.lineTo(proj[b][0], proj[b][1]); }
+      hctx.stroke();
+    }
+    const radOn = 1 - smooth(0.2, 0.3, q);
+    for (const p of dots) {
+      const m = reduce ? (q > 0.4 ? 1 : 0) : easeInOut(clamp((q - 0.22 - p.d * 0.12) / 0.24, 0, 1));
+      const a = proj[p.atom];
+      const depth = (a[2] + 1.6) / 3.2;
+      const lx = a[0] + p.jx * (0.7 + depth * 0.6), ly = a[1] + p.jy * (0.7 + depth * 0.6);
+      const burst = reduce ? 0 : Math.sin(Math.PI * m) * 46;
+      const e = reduce ? 1 : easeInOut(clamp((pre - p.d * 0.35) / 0.65, 0, 1));
+      const bx = p.ex + (p.gx - p.ex) * e, by = p.ey + (p.gy - p.ey) * e;
+      const x = bx + (lx - bx) * m + p.sx * burst, y = by + (ly - by) * m + p.sy * burst;
+      const isRad = p.rad && m < 0.5 && e > 0.97;
+      hctx.fillStyle = isRad ? 'rgba(0,47,167,' + (0.35 + 0.65 * radOn) + ')' : 'rgba(10,13,26,' + (m > 0.5 ? 0.35 + 0.6 * depth : 0.88) + ')';
+      const sz = m > 0.5 ? 1.6 + depth * 1.4 : 2.2;
+      hctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+    }
+    radbox.style.opacity = String(radOn * E);
+    const showB = q > 0.4;
+    hA.style.opacity = String(1 - smooth(0.3, 0.4, q)); hA.style.transform = 'translate3d(0,' + (-smooth(0.3, 0.4, q) * 24) + 'px,0)';
+    hB.style.opacity = String(smooth(0.36, 0.46, q)); hB.style.transform = 'translate3d(0,' + ((1 - smooth(0.36, 0.46, q)) * 24) + 'px,0)';
+    hA.setAttribute('aria-hidden', String(showB)); hB.setAttribute('aria-hidden', String(!showB));
+    hA.style.visibility = q > 0.41 ? 'hidden' : 'visible'; hB.style.visibility = q < 0.35 ? 'hidden' : 'visible';
+    hBtns.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.hinge === '1') === showB)));
+    hAxis.textContent = showB ? (root.dataset.lang === 'zh' ? '原子排在晶格上 · 示意' : 'atoms on a lattice · schematic') : 'U+9571 · ' + dots.length + (root.dataset.lang === 'zh' ? ' 个点' : ' dots');
+  }
+
+  /* ---------- loop ---------- */
+  function frame(now) {
+    if (motionOn) animT += now - lastFrame;
+    lastFrame = now;
+    try {
+      if (lenis) lenis.raf(now);
+      if (!built) safeBuild();
+      if (built) { drawSky(now); drawHinge(now); }
+    } catch (e) { if (!frame.warned) { console.warn('frame', e); frame.warned = true; } }
+    if (cardOn) { cx += (mx - cx) * 0.22; cy += (my - cy) * 0.22; const w = card.offsetWidth || 222, h = card.offsetHeight || 230; const x = clamp(cx + 18, 8, innerWidth - w - 8), y = clamp(cy + 18, 8, innerHeight - h - 8); card.style.left = x + 'px'; card.style.top = y + 'px'; }
+    requestAnimationFrame(frame);
+  }
+
+  let resizeT = 0, built = false, looping = false;
+  function safeBuild() { try { build(); } catch (e) { built = false; console.warn('build', e); } }
+  const rebuild = (ms) => { clearTimeout(resizeT); resizeT = setTimeout(safeBuild, ms); };
+  addEventListener('resize', () => rebuild(150));
+  if (window.ResizeObserver) { let first = true; new ResizeObserver(() => { if (first) { first = false; return; } rebuild(150); }).observe(hStage); }
+  const start = () => { safeBuild(); if (!looping) { looping = true; requestAnimationFrame(frame); } };
+  if (document.fonts && document.fonts.load) {
+    Promise.race([
+      Promise.all([document.fonts.load('700 200px "OPPO Sans"', '北辰镱钅'), document.fonts.load('500 20px "Geist Mono"', '·+*#@'), document.fonts.load('500 20px "OPPO Sans"', '星')]),
+      new Promise(r => setTimeout(r, 2500)),
+    ]).then(start, start);
+    document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => rebuild(100));
+  } else start();
+})();
+</script>
+</body>
+</html>
