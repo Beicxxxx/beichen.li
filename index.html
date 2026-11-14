@@ -349,6 +349,17 @@ html.still .status__dot { animation-play-state: paused; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .status__dot { animation: none; } .row::before, .term, .card, .backdrop { transition: none; } }
 
+
+/* ===== after DesignBookmark Motion (designbookmark.com/motion), rebuilt by hand ===== */
+/* Roll links: on hover each letter rolls up and a copy rises from below, 30 ms apart */
+.rc { display: inline-block; position: relative; overflow: hidden; vertical-align: top; line-height: 1.2; }
+.rc__i { display: inline-block; transition: transform .5s cubic-bezier(.7,0,.2,1); transition-delay: calc(var(--i) * 30ms); }
+.rc__i::after { content: attr(data-c); position: absolute; left: 0; top: 100%; }
+.nav__links a.rolled::after { display: none; }
+.nav__links a.rolled:hover .rc__i, .nav__links a.rolled:focus-visible .rc__i { transform: translateY(-100%); }
+html.still .rc__i { transition: none; }
+/* Weight wave: the address thickens under the pointer (Geist is variable, 100–900) */
+.ww { display: inline-block; font-variation-settings: "wght" var(--w, 600); font-weight: 600; }
 /* ===== after Cult UI (cult-ui.com), rebuilt by hand ===== */
 /* Edge Blur: under the bar on paper, blur thickens toward the bar in four bands */
 .edgeblur { position: fixed; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + var(--navh, 64px)); height: 44px; z-index: 49; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
@@ -938,6 +949,49 @@ html.coarse .row[aria-expanded] { cursor: pointer; -webkit-tap-highlight-color: 
       r.addEventListener('click', toggle);
       r.addEventListener('keydown', (e) => { if (e.key === ' ' || (e.key === 'Enter' && r.tagName !== 'A')) toggle(e); });
     });
+  }
+
+  /* ---------- Roll links + Weight wave (after DesignBookmark Motion), pointer devices only ---------- */
+  if (finePointer && !reduce) {
+    document.querySelectorAll('.nav__links a').forEach(a => {
+      a.querySelectorAll('span[lang]').forEach(sp => {
+        const txt = sp.textContent; sp.textContent = '';
+        const label = document.createElement('span'); label.className = 'sr'; label.textContent = txt; sp.appendChild(label);
+        [...txt].forEach((ch, i) => {
+          const o = document.createElement('span'); o.className = 'rc'; o.setAttribute('aria-hidden', 'true');
+          const inn = document.createElement('span'); inn.className = 'rc__i'; inn.style.setProperty('--i', i);
+          inn.textContent = ch === ' ' ? ' ' : ch; inn.dataset.c = inn.textContent;
+          o.appendChild(inn); sp.appendChild(o);
+        });
+      });
+      a.classList.add('rolled');
+    });
+
+    const mail = document.getElementById('mailAddr'), mtxt = mail.textContent;
+    mail.setAttribute('aria-label', mtxt); mail.textContent = '';
+    const glyphs = [...mtxt].map(ch => { const g = document.createElement('span'); g.className = 'ww'; g.textContent = ch; g.setAttribute('aria-hidden', 'true'); mail.appendChild(g); return { g, w: 600, t: 600 }; });
+    let wwRaf = 0, px = null;
+    const BASE = 600, PEAK = 900, LOW = 300;
+    const wwStep = () => {
+      let moving = false;
+      const fs = parseFloat(getComputedStyle(mail).fontSize) || 80, sigma = fs * 0.9;
+      for (const it of glyphs) {
+        if (px === null || !motionOn) it.t = BASE;
+        else {
+          const b = it.g.getBoundingClientRect(), d = (b.left + b.width / 2) - px.x, dy = Math.max(0, Math.abs((b.top + b.height / 2) - px.y) - b.height / 2);
+          const k = Math.exp(-(d * d) / (2 * sigma * sigma)) * Math.exp(-(dy * dy) / (2 * sigma * sigma));
+          it.t = LOW + (PEAK - LOW) * k + (BASE - LOW) * (1 - k) * 0.55;
+        }
+        it.w += (it.t - it.w) * 0.18;
+        if (Math.abs(it.t - it.w) > 0.5) moving = true; else it.w = it.t;
+        it.g.style.setProperty('--w', it.w.toFixed(1));
+      }
+      wwRaf = moving ? requestAnimationFrame(wwStep) : 0;
+    };
+    const kick = () => { if (!wwRaf) wwRaf = requestAnimationFrame(wwStep); };
+    const zone = mail.closest('.mail') || mail;
+    zone.addEventListener('pointermove', (e) => { px = { x: e.clientX, y: e.clientY }; kick(); }, { passive: true });
+    zone.addEventListener('pointerleave', () => { px = null; kick(); });
   }
   /* ---------- magnetic controls ---------- */
   if (finePointer && !reduce) {
