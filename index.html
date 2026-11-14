@@ -348,6 +348,58 @@ html[data-lang="zh"] .hinge__state h2, html[data-lang="ja"] .hinge__state h2 { l
 html.still .status__dot { animation-play-state: paused; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .status__dot { animation: none; } .row::before, .term, .card, .backdrop { transition: none; } }
+
+/* ===== after Cult UI (cult-ui.com), rebuilt by hand ===== */
+/* Edge Blur: under the bar on paper, blur thickens toward the bar in four bands */
+.edgeblur { position: fixed; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + var(--navh, 64px)); height: 44px; z-index: 49; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
+.nav.on-paper + .edgeblur { opacity: 1; }
+.edgeblur i { position: absolute; inset: 0; }
+.edgeblur i:nth-child(1) { backdrop-filter: blur(.5px); -webkit-backdrop-filter: blur(.5px); mask-image: linear-gradient(to top, transparent 0%, #000 25%, #000 50%, transparent 75%); -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 25%, #000 50%, transparent 75%); }
+.edgeblur i:nth-child(2) { backdrop-filter: blur(1.5px); -webkit-backdrop-filter: blur(1.5px); mask-image: linear-gradient(to top, transparent 25%, #000 50%, #000 75%, transparent 100%); -webkit-mask-image: linear-gradient(to top, transparent 25%, #000 50%, #000 75%, transparent 100%); }
+.edgeblur i:nth-child(3) { backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); mask-image: linear-gradient(to top, transparent 50%, #000 75%, #000 100%); -webkit-mask-image: linear-gradient(to top, transparent 50%, #000 75%, #000 100%); }
+.edgeblur i:nth-child(4) { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); mask-image: linear-gradient(to top, transparent 75%, #000 100%); -webkit-mask-image: linear-gradient(to top, transparent 75%, #000 100%); }
+.edgeblur::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--paper) 70%, transparent), transparent); }
+
+/* Rolling Number: odometer digits on a spring */
+.roll { display: inline-flex; vertical-align: top; height: 1lh; overflow: hidden; font-variant-numeric: tabular-nums; }
+.roll__d { display: block; height: 1lh; overflow: hidden; }
+.roll__s { display: flex; flex-direction: column; transition: transform .7s cubic-bezier(.34, 1.45, .52, 1); will-change: transform; }
+.roll__s > span { display: block; height: 1lh; text-align: center; }
+html.still .roll__s { transition: none; }
+@media (prefers-reduced-motion: reduce) { .roll__s { transition: none; } }
+
+/* Copy Button: the copy glyph gives way to a check that draws itself */
+.cp { position: relative; width: 14px; height: 14px; flex: none; }
+.cp svg { position: absolute; inset: 0; transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .2s ease; }
+.cp__ok { opacity: 0; transform: scale(.6); }
+.cp__ok path { stroke-dasharray: 16; stroke-dashoffset: 16; transition: stroke-dashoffset .35s cubic-bezier(.2,.8,.2,1) .08s; }
+#copyBtn.done .cp__copy { opacity: 0; transform: scale(.5) rotate(-12deg); }
+#copyBtn.done .cp__ok { opacity: 1; transform: none; }
+#copyBtn.done .cp__ok path { stroke-dashoffset: 0; }
+
+/* Expandable: on touch screens a project row opens in place instead of a hover card */
+.rowx { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s cubic-bezier(.2,.8,.2,1); }
+.rowx > div { min-height: 0; overflow: hidden; }
+.rowx.open { grid-template-rows: 1fr; border-bottom: 1px solid var(--ink); }
+.rowx__in { display: grid; gap: 0; padding: 0 0 18px; opacity: 0; transform: translateY(-10px); transition: opacity .3s ease, transform .55s cubic-bezier(.2,.8,.2,1); }
+.rowx.open .rowx__in { opacity: 1; transform: none; transition-delay: .08s; }
+.rowx__in > :first-child { border: 1px solid var(--ink); border-top: 0; }
+.rowx__in .card__cap { padding: 12px 4px 0; font-size: 0.75rem; }
+.rowx__go { display: inline-flex; justify-self: start; min-height: 44px; align-items: center; color: var(--ikb) !important; text-decoration: none; }
+.rowx .pv-shots img { width: min(42%, 150px); height: auto; }
+.pv-spec { display: grid; place-items: center; padding: 22px 12px; background: var(--ikb); color: var(--on-ikb); font-family: "LXGW WenKai", serif; font-size: clamp(2.6rem, 10vw, 3.4rem); line-height: 1.1; }
+html.coarse .row[aria-expanded] .row__name::after { content: "+"; display: inline-block; margin-left: .35em; font-weight: 400; color: var(--mute); transition: transform .45s cubic-bezier(.2,.8,.2,1), color .3s; }
+html.coarse .row[aria-expanded="true"] .row__name::after { transform: rotate(45deg); color: var(--on-ikb-mute); }
+html.coarse .row:hover::before { transform: scaleY(0); }
+html.coarse .row:hover, html.coarse .row:hover .row__dim { color: inherit; }
+html.coarse .row[aria-expanded="true"]::before { display: block; transform: scaleY(1); transform-origin: top; }
+html.coarse .row[aria-expanded="true"], html.coarse .row[aria-expanded="true"] .row__dim { color: var(--on-ikb) !important; }
+html.coarse .row[aria-expanded="true"] .row__dim { color: var(--on-ikb-mute) !important; }
+html.coarse .row[aria-expanded] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* Dither Image: a two-tone ordered dither that resolves into the screenshot */
+.dith { position: relative; display: block; line-height: 0; }
+.dith canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; transition: opacity .35s ease; }
 </style>
 </head>
 <body>
@@ -376,6 +428,7 @@ html.still .status__dot { animation-play-state: paused; }
     </div>
   </div>
 </header>
+<div class="edgeblur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <section class="sky" id="top" aria-label="Beichen Li">
   <div class="sky__stick" id="stick">
@@ -545,7 +598,7 @@ html.still .status__dot { animation-play-state: paused; }
           <a class="mail__addr" id="mailAddr" href="mailto:me@beichen.li">me@beichen.li</a>
         </div>
         <div class="links">
-          <button class="btn" type="button" id="copyBtn"><span><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span><span lang="ja" data-copy-label>アドレスをコピー</span></span><svg class="btn__ic" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z"/><path d="M10.5 5.5v-3h-8v8h3"/></svg></button>
+          <button class="btn" type="button" id="copyBtn"><span><span lang="en" data-copy-label>Copy address</span><span lang="zh-Hans" data-copy-label>复制地址</span><span lang="ja" data-copy-label>アドレスをコピー</span></span><span class="cp" aria-hidden="true"><svg class="cp__copy" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5.5 5.5h8v8h-8z"/><path d="M10.5 5.5v-3h-8v8h3"/></svg><svg class="cp__ok" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span></button>
           <a class="btn" href="https://github.com/Beicxxxx" target="_blank" rel="noopener"><span>GitHub</span><span class="btn__ic" aria-hidden="true">↗</span></a>
           <a class="btn" href="https://www.linkedin.com/in/beichen-li-818755389" target="_blank" rel="noopener"><span>LinkedIn</span><span class="btn__ic" aria-hidden="true">↗</span></a>
           <a class="btn" lang="en" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV (PDF)</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="zh-Hans" href="cv/Beichen_Li_CV_zh.pdf" target="_blank" rel="noopener"><span>简历 PDF</span><span class="btn__ic" aria-hidden="true">↗</span></a><a class="btn" lang="ja" href="cv/Beichen_Li_CV.pdf" target="_blank" rel="noopener"><span>CV（英語）</span><span class="btn__ic" aria-hidden="true">↗</span></a>
@@ -735,6 +788,8 @@ html.still .status__dot { animation-play-state: paused; }
     if (!praf) { plast = performance.now(); praf = requestAnimationFrame(pillStep); }
   }
   pillTarget(true);
+  const setNavH = () => root.style.setProperty('--navh', document.getElementById('nav').offsetHeight + 'px');
+  setNavH(); addEventListener('resize', setNavH);
   addEventListener('resize', () => pillTarget(true));
   if (document.fonts) document.fonts.ready.then(() => pillTarget(true));
   if (!reduce) {
@@ -762,9 +817,9 @@ html.still .status__dot { animation-play-state: paused; }
     const addr = 'me@beichen.li';
     const labels = copyBtn.querySelectorAll('[data-copy-label]');
     const set = (en, zh, ja) => { labels[0].textContent = en; labels[1].textContent = zh; labels[2].textContent = ja; };
-    try { await navigator.clipboard.writeText(addr); set('Copied', '已复制', 'コピーしました'); }
+    try { await navigator.clipboard.writeText(addr); set('Copied', '已复制', 'コピーしました'); copyBtn.classList.add('done'); }
     catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mailAddr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); set('Selected, press Ctrl+C', '已选中，按 Ctrl+C 复制', '選択しました。Ctrl+C でコピー'); }
-    setTimeout(() => set('Copy address', '复制地址', 'アドレスをコピー'), 2200);
+    clearTimeout(copyBtn._t); copyBtn._t = setTimeout(() => { set('Copy address', '复制地址', 'アドレスをコピー'); copyBtn.classList.remove('done'); }, 2200);
   });
 
   /* ---------- hover cards + backdrop numbers ---------- */
@@ -793,8 +848,8 @@ html.still .status__dot { animation-play-state: paused; }
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (finePointer) document.querySelectorAll('.row[data-preview]').forEach(r => {
     const tpl = document.getElementById('pv-' + r.dataset.preview); if (!tpl) return;
-    const show = (x, y) => { cardIn.innerHTML = tpl.innerHTML; card.classList.add('on', 'wide'); cardOn = true; placeCard(x, y); if (!cx) { cx = mx; cy = my; } };
-    const hide = () => { card.classList.remove('on', 'wide'); cardOn = false; };
+    const show = (x, y) => { const fresh = !card.classList.contains('on') || cardIn.dataset.pv !== r.dataset.preview; cardIn.innerHTML = tpl.innerHTML; cardIn.dataset.pv = r.dataset.preview; if (fresh) ditherIn(cardIn); card.classList.add('on', 'wide'); cardOn = true; placeCard(x, y); if (!cx) { cx = mx; cy = my; } };
+    const hide = () => { card.classList.remove('on', 'wide'); cardOn = false; delete cardIn.dataset.pv; };
     hiders.push(hide);
     r.addEventListener('pointerenter', (e) => show(e.clientX, e.clientY));
     r.addEventListener('pointermove', (e) => placeCard(e.clientX, e.clientY));
@@ -802,6 +857,87 @@ html.still .status__dot { animation-play-state: paused; }
     r.addEventListener('focus', () => { const b = r.getBoundingClientRect(); show(b.right - 320, b.bottom); });
     r.addEventListener('blur', hide);
   });
+
+  /* ---------- Dither Image (after Cult UI) ----------
+     Screenshots arrive as a two-tone ordered (Bayer 4x4) dither in IKB and paper, coarse to fine,
+     then the real image shows through. Motion off or reduced: the image just appears. */
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  function ditherIn(scope) {
+    if (reduce || !motionOn) return;
+    scope.querySelectorAll('.pv-shots img').forEach(img => {
+      const wrap = document.createElement('span'); wrap.className = 'dith';
+      img.replaceWith(wrap); wrap.appendChild(img);
+      const cvs = document.createElement('canvas'); wrap.appendChild(cvs);
+      const go = () => {
+        const W = img.clientWidth || img.width, H = img.clientHeight || img.height;
+        if (!W || !H) { cvs.remove(); return; }
+        const ctx2 = cvs.getContext('2d'), steps = [7, 4, 2], t0 = performance.now();
+        const src = document.createElement('canvas'), sx = src.getContext('2d', { willReadFrequently: true });
+        let shown = -1;
+        const draw = (cs) => {
+          const w = Math.max(1, Math.round(W / cs)), h = Math.max(1, Math.round(H / cs));
+          src.width = w; src.height = h; sx.drawImage(img, 0, 0, w, h);
+          let d; try { d = sx.getImageData(0, 0, w, h); } catch (e) { cvs.remove(); return false; }
+          const px = d.data;
+          for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4, lum = (0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2]) / 255;
+            const on = lum > (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
+            px[i] = on ? 245 : 0; px[i + 1] = on ? 246 : 47; px[i + 2] = on ? 250 : 167; px[i + 3] = 255;
+          }
+          sx.putImageData(d, 0, 0);
+          cvs.width = w; cvs.height = h; ctx2.imageSmoothingEnabled = false; ctx2.drawImage(src, 0, 0);
+          return true;
+        };
+        const tick = (now) => {
+          if (!cvs.isConnected) return;
+          const k = Math.min(steps.length - 1, Math.floor((now - t0) / 150));
+          if (k !== shown) { shown = k; if (draw(steps[k]) === false) return; }
+          if (now - t0 < steps.length * 150) requestAnimationFrame(tick);
+          else { cvs.style.opacity = '0'; setTimeout(() => cvs.remove(), 400); }
+        };
+        requestAnimationFrame(tick);
+      };
+      if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go, { once: true });
+    });
+  }
+
+  /* ---------- Expandable project rows (after Cult UI), touch screens only ----------
+     With no hover there are no preview cards, so a tap opens the row in place (one at a time);
+     the link to GitHub or Google Fonts moves into the opened panel. */
+  if (!finePointer) {
+    root.classList.add('coarse');
+    const rowsX = [];
+    document.querySelectorAll('.rows > .row').forEach((r, i) => {
+      const tpl = r.dataset.preview && document.getElementById('pv-' + r.dataset.preview);
+      if (!tpl && !r.classList.contains('row--spec')) return;
+      const panel = document.createElement('div'); panel.className = 'rowx'; panel.id = 'rowx-' + i;
+      panel.setAttribute('role', 'region'); panel.inert = true;
+      const inner = document.createElement('div'), body = document.createElement('div'); body.className = 'rowx__in';
+      body.innerHTML = tpl ? tpl.innerHTML : '<div class="pv-spec"><span lang="zh">霞鹜文楷</span></div><div class="card__cap mono"><span lang="en">Opens on Google Fonts ↗</span><span lang="zh-Hans">在 Google Fonts 上打开 ↗</span><span lang="ja">Google Fonts で開く ↗</span></div>';
+      if (r.href) {
+        const cap = body.querySelector('.card__cap'), a = document.createElement('a');
+        a.href = r.href; a.target = '_blank'; a.rel = 'noopener'; a.className = 'card__cap mono rowx__go';
+        if (cap) { a.append(...cap.childNodes); cap.replaceWith(a); } else body.appendChild(a);
+        r.setAttribute('role', 'button');
+      }
+      inner.appendChild(body); panel.appendChild(inner); r.after(panel);
+      r.setAttribute('aria-expanded', 'false'); r.setAttribute('aria-controls', panel.id);
+      if (!r.hasAttribute('tabindex') && r.tagName !== 'A') r.tabIndex = 0;
+      const set = (open) => {
+        r.setAttribute('aria-expanded', String(open)); panel.classList.toggle('open', open); panel.inert = !open;
+        if (!open) return;
+        if (r.dataset.preview === 'edibli') ditherIn(panel);
+        setTimeout(() => {
+          const b = panel.getBoundingClientRect(), over = b.bottom - (innerHeight - 24);
+          if (over > 0) { const y = scrollY + Math.min(over, r.getBoundingClientRect().top - 90); if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else scrollTo({ top: y, behavior: 'smooth' }); }
+        }, 560);
+      };
+      rowsX.push({ r, set });
+      const toggle = (e) => { e.preventDefault(); const open = r.getAttribute('aria-expanded') !== 'true'; rowsX.forEach(x => { if (x.r !== r) x.set(false); }); set(open); };
+      r.addEventListener('click', toggle);
+      r.addEventListener('keydown', (e) => { if (e.key === ' ' || (e.key === 'Enter' && r.tagName !== 'A')) toggle(e); });
+    });
+  }
   /* ---------- magnetic controls ---------- */
   if (finePointer && !reduce) {
     const mags = [...document.querySelectorAll('.nav .pill, .nav .iconbtn, .hinge__switch')];
@@ -823,6 +959,7 @@ html.still .status__dot { animation-play-state: paused; }
   const heroEl = document.getElementById('hero');
   const polarisLabel = document.getElementById('polarisLabel');
   const hintTxt = document.getElementById('hintTxt'), hintBar = document.getElementById('hintBar'), hintEl = document.getElementById('hint');
+  const hintRoll = makeRoller(hintTxt, 3);
   const nav = document.getElementById('nav');
   const IKB = [0, 47, 167];
   let W = 0, H = 0, DPR = 1, cell = 9, stars = [], pol = { x: 0, y: 0 }, atlas = {}, tiles = [];
@@ -965,7 +1102,7 @@ html.still .status__dot { animation-play-state: paused; }
     heroEl.style.visibility = heroOut > 0.99 ? 'hidden' : 'visible';
     polarisLabel.style.opacity = String(1 - smooth(0.1, 0.3, p));
     hintEl.style.opacity = String(1 - smooth(0.25, 0.45, p));
-    hintTxt.textContent = String(Math.round(p * 100)).padStart(3, '0');
+    hintRoll(Math.round(p * 100));
     hintBar.style.transform = 'scaleX(' + p + ')';
     nav.classList.toggle('on-paper', sky.getBoundingClientRect().bottom < 64 || s > 0.9);
   }
@@ -975,6 +1112,26 @@ html.still .status__dot { animation-play-state: paused; }
   const hStage = document.getElementById('hingeStage');
   const hc = document.getElementById('hingeCanvas'), hctx = hc.getContext('2d');
   const radbox = document.getElementById('radbox'), hAxis = document.getElementById('hingeAxis');
+  /* Rolling Number (after Cult UI): each digit is a 0-9 column that springs to its place */
+  function makeRoller(el, n) {
+    el.textContent = ''; el.classList.add('roll');
+    const cols = [];
+    for (let i = 0; i < n; i++) {
+      const d = document.createElement('span'); d.className = 'roll__d';
+      const st = document.createElement('span'); st.className = 'roll__s';
+      for (let k = 0; k < 10; k++) { const c = document.createElement('span'); c.textContent = k; st.appendChild(c); }
+      d.appendChild(st); el.appendChild(d); cols.push(st);
+    }
+    let last = -1;
+    return (v) => {
+      v = Math.max(0, Math.round(v)); if (v === last) return; last = v;
+      const str = String(v).padStart(n, '0').slice(-n);
+      for (let i = 0; i < n; i++) cols[i].style.transform = 'translateY(calc(' + (-str[i]) + ' * 1lh))';
+    };
+  }
+  hAxis.innerHTML = '<span class="ax-a">U+9571 · <span class="ax-n"></span><span class="ax-u"></span></span><span class="ax-b" hidden></span>';
+  const axA = hAxis.querySelector('.ax-a'), axB = hAxis.querySelector('.ax-b'), axUnit = hAxis.querySelector('.ax-u');
+  const dotRoll = makeRoller(hAxis.querySelector('.ax-n'), 4);
   const hA = document.getElementById('hingeA'), hB = document.getElementById('hingeB');
   const hBtns = document.querySelectorAll('[data-hinge]');
   let HW = 0, HH = 0, dots = [], atoms = [], bonds = [], latScale = 1;
@@ -1052,6 +1209,7 @@ html.still .status__dot { animation-play-state: paused; }
       hctx.stroke();
     }
     const radOn = 1 - smooth(0.2, 0.3, q);
+    let arrived = 0;
     for (const p of dots) {
       const m = reduce ? (q > 0.4 ? 1 : 0) : easeInOut(clamp((q - 0.22 - p.d * 0.12) / 0.24, 0, 1));
       const a = proj[p.atom];
@@ -1059,6 +1217,7 @@ html.still .status__dot { animation-play-state: paused; }
       const lx = a[0] + p.jx * (0.7 + depth * 0.6), ly = a[1] + p.jy * (0.7 + depth * 0.6);
       const burst = reduce ? 0 : Math.sin(Math.PI * m) * 46;
       const e = reduce ? 1 : easeInOut(clamp((pre - p.d * 0.35) / 0.65, 0, 1));
+      if (e > 0.98) arrived++;
       const bx = p.ex + (p.gx - p.ex) * e, by = p.ey + (p.gy - p.ey) * e;
       const x = bx + (lx - bx) * m + p.sx * burst, y = by + (ly - by) * m + p.sy * burst;
       const isRad = p.rad && m < 0.5 && e > 0.97;
@@ -1074,7 +1233,9 @@ html.still .status__dot { animation-play-state: paused; }
     hA.style.visibility = q > 0.41 ? 'hidden' : 'visible'; hB.style.visibility = q < 0.35 ? 'hidden' : 'visible';
     hBtns.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.hinge === '1') === showB)));
     const L = root.dataset.lang;
-    hAxis.textContent = showB ? ({ zh: '原子排在晶格上 · 示意', ja: '格子上の原子 · 模式図' }[L] || 'atoms on a lattice · schematic') : 'U+9571 · ' + dots.length + ({ zh: ' 个点', ja: ' 点' }[L] || ' dots');
+    axA.hidden = showB; axB.hidden = !showB;
+    if (showB) axB.textContent = { zh: '原子排在晶格上 · 示意', ja: '格子上の原子 · 模式図' }[L] || 'atoms on a lattice · schematic';
+    else { axUnit.textContent = { zh: ' 个点', ja: ' 点' }[L] || ' dots'; dotRoll(arrived); }
   }
 
   /* ---------- loop ---------- */
