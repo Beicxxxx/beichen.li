@@ -358,6 +358,8 @@ html.still .status__dot { animation-play-state: paused; }
 .nav__links a.rolled::after { display: none; }
 .nav__links a.rolled:hover .rc__i, .nav__links a.rolled:focus-visible .rc__i { transform: translateY(-100%); }
 html.still .rc__i { transition: none; }
+/* Read along: in the About paragraph, words come up from faint as it scrolls through; once read they stay */
+.ra { opacity: var(--o, 1); transition: opacity .25s linear; }
 /* Weight wave: the address thickens under the pointer (Geist is variable, 100–900) */
 .ww { display: inline-block; font-variation-settings: "wght" var(--w, 600); font-weight: 600; }
 /* ===== after Cult UI (cult-ui.com), rebuilt by hand ===== */
@@ -951,6 +953,37 @@ html.coarse .row[aria-expanded] { cursor: pointer; -webkit-tap-highlight-color: 
     });
   }
 
+
+  /* ---------- Read along (after DesignBookmark Motion): About paragraph only ----------
+     Words start at a quarter strength and come up in reading order as the paragraph scrolls
+     up from the bottom of the screen; all of it is lit by the time its last line is three-quarters down. Progress only moves forward, so text
+     already read never fades again. Motion off or reduced: the paragraph is simply shown. */
+  {
+    const lead = document.querySelector('#about .lead');
+    const RTOK = /\s+|[“‘（《「『【(]*[぀-ヿ㐀-鿿豈-﫿][，。、；：！？”’）》」』】)…·ー]*|[^\s぀-ヿ㐀-鿿豈-﫿]+/g;
+    const sets = {};
+    lead.querySelectorAll(':scope > span[lang]').forEach(sp => {
+      const toks = sp.textContent.match(RTOK) || []; sp.textContent = '';
+      const list = [];
+      toks.forEach(t => { if (/^\s+$/.test(t)) { sp.appendChild(document.createTextNode(t)); return; } const w = document.createElement('span'); w.className = 'ra'; w.textContent = t; sp.appendChild(w); list.push(w); });
+      sets[sp.getAttribute('lang')] = list;
+    });
+    let maxP = 0, raRaf = 0;
+    const paint = () => {
+      raRaf = 0;
+      const tag = { en: 'en', zh: 'zh-Hans', ja: 'ja' }[root.dataset.lang] || 'en', list = sets[tag] || [];
+      if (reduce || !motionOn) { list.forEach(w => w.style.removeProperty('--o')); return; }
+      const r = lead.getBoundingClientRect(), vh = innerHeight;
+      maxP = Math.max(maxP, clamp((vh * 0.88 - r.top) / (r.height + vh * 0.13), 0, 1));  /* done once its last line is three-quarters down the screen */
+      const N = list.length, soft = 5, head = maxP * (N + soft);
+      list.forEach((w, i) => { const o = 0.24 + 0.76 * clamp((head - i) / soft, 0, 1); w.style.setProperty('--o', o.toFixed(3)); });
+    };
+    const kickRA = () => { if (!raRaf) raRaf = requestAnimationFrame(paint); };
+    addEventListener('scroll', kickRA, { passive: true }); addEventListener('resize', kickRA);
+    document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => setTimeout(kickRA, 0)));
+    motionBtn.addEventListener('click', kickRA);
+    kickRA();
+  }
   /* ---------- Roll links + Weight wave (after DesignBookmark Motion), pointer devices only ---------- */
   if (finePointer && !reduce) {
     document.querySelectorAll('.nav__links a').forEach(a => {
